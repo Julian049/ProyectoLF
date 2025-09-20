@@ -1,37 +1,30 @@
 package co.edu.uptc.model;
 
-public class State {
-    private String nombre;
-    private boolean initialState;
-    private boolean finalState;
+import co.edu.uptc.utils.TypeState;
 
-    public State(String nombre) {
-        this.nombre = nombre;
-        this.initialState = false;
-        this.finalState = false;
+public class State {
+
+    private String name;
+    private TypeState type;
+
+    public State(String name) {
+        this.name = name;
     }
 
     public String getNombre() {
-        return nombre;
+        return name;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombre(String name) {
+        this.name = name;
     }
 
-    public boolean isInitialState() {
-        return initialState;
+    public TypeState getType() {
+        return type;
     }
 
-    public void setInitialState(boolean initialState) {
-        this.initialState = initialState;
+    public void setType(TypeState type) {
+        this.type = type;
     }
 
-    public boolean isFinalState() {
-        return finalState;
-    }
-
-    public void setFinalState(boolean finalState) {
-        this.finalState = finalState;
-    }
 }
