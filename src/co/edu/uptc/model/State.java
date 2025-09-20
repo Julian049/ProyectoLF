@@ -1,14 +1,15 @@
 package co.edu.uptc.model;
 
-import co.edu.uptc.utils.TypeState;
-
 public class State {
 
     private String name;
-    private TypeState type;
+    private boolean isInitial;
+    private boolean isFinal;
 
     public State(String name) {
         this.name = name;
+        this.isInitial = false;
+        this.isFinal = false;
     }
 
     public String getNombre() {
@@ -19,12 +20,32 @@ public class State {
         this.name = name;
     }
 
-    public TypeState getType() {
-        return type;
+    public boolean isInitial() {
+        return isInitial;
     }
 
-    public void setType(TypeState type) {
-        this.type = type;
+    public void setInitial(boolean initial) {
+        isInitial = initial;
+    }
+
+    public boolean isFinal() {
+        return isFinal;
+    }
+
+    public void setFinal(boolean finalState) {
+        isFinal = finalState;
+    }
+
+    public String getTypeDescription() {
+        if (isInitial && isFinal) {
+            return "Initial-Final";
+        } else if (isInitial) {
+            return "Initial";
+        } else if (isFinal) {
+            return "Final";
+        } else {
+            return "Intermediate";
+        }
     }
 
 }

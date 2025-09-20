@@ -1,7 +1,5 @@
 package co.edu.uptc.model;
 
-import co.edu.uptc.utils.TypeState;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,6 @@ public class DFA {
 
     public void addState() {
         State state = new State("q" + states.size());
-        state.setType(TypeState.INTERMEDIUM);
         this.states.add(state);
     }
 
@@ -58,7 +55,6 @@ public class DFA {
     }
 
     public void updateState(State state) {
-        List<State> temp = this.states;
         this.states.remove(state);
         this.states.add(state);
     }
@@ -70,7 +66,7 @@ public class DFA {
 
     public State getInitialState() {
         for (State state : this.states) {
-            if (state.getType().equals(TypeState.INITIAL)) {
+            if (state.isInitial()) {
                 return state;
             }
         }
@@ -88,7 +84,7 @@ public class DFA {
     }
 
     public boolean isFinalState(State state) {
-        return state.getType().equals(TypeState.FINAL);
+        return state.isFinal();
     }
 
     public String validate(String input) {
@@ -96,6 +92,14 @@ public class DFA {
 
         if (currentState == null) {
             return "No se ha definido un estado inicial";
+        }
+
+        if (input.isEmpty()) {
+            if (currentState.isFinal()) {
+                return "Cadena aceptada";
+            } else {
+                return "Cadena rechazada";
+            }
         }
 
         String[] values = input.split("");
@@ -113,7 +117,6 @@ public class DFA {
             return "Cadena rechazada";
         }
     }
-
 
     public List<State> getStates() {
         return states;

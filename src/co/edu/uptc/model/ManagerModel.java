@@ -24,8 +24,12 @@ public class ManagerModel implements ContractMVP.Model {
     }
 
     @Override
-    public List<State> getTransitions() {
-        return dfa.getStates();
+    public List<Transition> getTransitions() {
+        return dfa.getTransitions();
+    }
+
+    public List<Transition> getTransitionsList() {
+        return dfa.getTransitions();
     }
 
     @Override
@@ -46,6 +50,11 @@ public class ManagerModel implements ContractMVP.Model {
     @Override
     public void removeState(String state) {
         dfa.deleteState(state);
+    }
+
+    @Override
+    public String validate(String value) {
+        return dfa.validate(value);
     }
 
 }

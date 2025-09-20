@@ -2,6 +2,7 @@ package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.ManagerModel;
 import co.edu.uptc.model.State;
+import co.edu.uptc.model.Transition;
 import co.edu.uptc.view.ManagerView;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public List<State> getTransitions() {
+    public List<Transition> getTransitions() {
         return model.getTransitions();
     }
 
@@ -47,6 +48,11 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
+    public String validate(String value) {
+        return model.validate(value);
+    }
+
+    @Override
     public void setModel(ContractMVP.Model model) {
         this.model = model;
     }
@@ -54,7 +60,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     @Override
     public void run() {
         makeMVP();
-        //view.initUI();
+        view.initUI();
     }
 
     private void makeMVP() {
