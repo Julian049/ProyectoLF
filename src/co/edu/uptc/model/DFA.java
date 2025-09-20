@@ -115,5 +115,12 @@ public class DFA {
     }
 
 
+    public List<State> getStates() {
+        return states;
+    }
+
+    public List<Transition> getTransitions() {
+        return transitions;
+    }
 
 }

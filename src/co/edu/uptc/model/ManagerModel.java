@@ -2,15 +2,50 @@ package co.edu.uptc.model;
 
 import co.edu.uptc.presenter.ContractMVP;
 
+import java.util.List;
+
 public class ManagerModel implements ContractMVP.Model {
 
-    private ContractMVP.Presenter presenter;
+    public ContractMVP.Presenter presenter;
     private DFA dfa;
 
-
+    public ManagerModel() {
+        this.dfa = new DFA();
+    }
 
     @Override
     public void setPresenter(ContractMVP.Presenter presenter) {
         this.presenter = presenter;
     }
+
+    @Override
+    public List<State> getStates() {
+        return dfa.getStates();
+    }
+
+    @Override
+    public List<State> getTransitions() {
+        return dfa.getStates();
+    }
+
+    @Override
+    public void addTransition(String to, String from, String value) {
+        dfa.addTransition(to, from, value);
+    }
+
+    @Override
+    public void removeTransition(String transition) {
+        dfa.deleteTransition(transition);
+    }
+
+    @Override
+    public void addState() {
+        dfa.addState();
+    }
+
+    @Override
+    public void removeState(String state) {
+        dfa.deleteState(state);
+    }
+
 }
