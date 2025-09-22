@@ -44,8 +44,8 @@ public class ManagerModel implements ContractMVP.Model {
     }
 
     @Override
-    public void addState() {
-        dfa.addState();
+    public void addState(String name) throws ObjectAlreadyExists{
+        dfa.addState(name);
     }
 
     @Override

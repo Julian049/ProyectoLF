@@ -39,8 +39,8 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public void addState() {
-        model.addState();
+    public void addState(String name) throws ObjectAlreadyExists{
+        model.addState(name);
     }
 
     @Override

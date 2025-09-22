@@ -174,11 +174,19 @@ public class OptionsPanel extends JPanel {
     private void createAddStatesButton() {
         addStatesButton = new JButton("Agregar");
         addStatesButton.addActionListener(e -> {
-            columnNames.add(statesValues.getText());
-            tableModel.addColumn(statesValues.getText());
-            revalidate();
-            State state = new State(statesValues.getText());
-            managerView.getStates().add(state);
+            for (String state : managerView.separateByComma(statesValues.getText())){
+                if (!state.isEmpty()) {
+                    try {
+                        managerView.addState(state);
+                        columnNames.add(state);
+                        tableModel.addColumn(state);
+                        revalidate();
+                        statesValues.setText("");
+                    } catch (ObjectAlreadyExists ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
         });
     }
 

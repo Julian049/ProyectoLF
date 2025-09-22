@@ -62,4 +62,8 @@ public class ManagerView extends JFrame implements ContractMVP.View {
     public void addSymbol(String symbol) throws ObjectAlreadyExists {
         presenter.addSymbol(symbol);
     }
+
+    public void addState(String nameState) throws ObjectAlreadyExists {
+        presenter.addState(nameState);
+    }
 }

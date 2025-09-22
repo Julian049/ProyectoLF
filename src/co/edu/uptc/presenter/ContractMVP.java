@@ -14,7 +14,7 @@ public interface ContractMVP {
         List<Transition> getTransitions();
         void addTransition(String to, String from, char value);
         void removeTransition(char transition);
-        void addState();
+        void addState(String name) throws ObjectAlreadyExists;
         void removeState(String state);
         String validate(String value);
         void addSymbol(String symbol) throws ObjectAlreadyExists;
@@ -27,7 +27,7 @@ public interface ContractMVP {
         List<Transition> getTransitions();
         void addTransition(String to, String from, char value);
         void removeTransition(char transition);
-        void addState();
+        void addState(String name) throws ObjectAlreadyExists;
         void removeState(String state);
         String validate(String value);
         void addSymbol(String symbol) throws ObjectAlreadyExists;

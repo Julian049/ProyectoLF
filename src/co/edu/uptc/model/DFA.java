@@ -17,9 +17,21 @@ public class DFA {
         this.symbols = new ArrayList<>();
     }
 
-    public void addState() {
-        State state = new State("q" + states.size());
-        this.states.add(state);
+    public void addState(String name) throws ObjectAlreadyExists {
+        State newState = new State(name);
+        if (states.isEmpty()) {
+            this.states.add(newState);
+        } else {
+            for (State state : states) {
+                if (state.getNombre().equalsIgnoreCase(name)) {
+                    ObjectAlreadyExists ex = new ObjectAlreadyExists("El estado ya existe");
+                    throw ex;
+                } else {
+                    this.states.add(newState);
+                    break;
+                }
+            }
+        }
     }
 
     public void addTransition(String from, String to, char symbol) {
