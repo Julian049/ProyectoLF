@@ -12,8 +12,8 @@ public interface ContractMVP {
         void setPresenter(Presenter presenter);
         List<State> getStates();
         List<Transition> getTransitions();
-        void addTransition(String to, String from, String value);
-        void removeTransition(String transition);
+        void addTransition(String to, String from, char value);
+        void removeTransition(char transition);
         void addState();
         void removeState(String state);
         String validate(String value);
@@ -25,8 +25,8 @@ public interface ContractMVP {
         void setView(View view);
         List<State> getStates();
         List<Transition> getTransitions();
-        void addTransition(String to, String from, String value);
-        void removeTransition(String transition);
+        void addTransition(String to, String from, char value);
+        void removeTransition(char transition);
         void addState();
         void removeState(String state);
         String validate(String value);

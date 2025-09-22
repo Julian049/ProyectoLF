@@ -22,7 +22,7 @@ public class DFA {
         this.states.add(state);
     }
 
-    public void addTransition(String from, String to, String symbol) {
+    public void addTransition(String from, String to, char symbol) {
         State stateFrom = searchState(from);
         State stateTo = searchState(to);
 
@@ -43,9 +43,9 @@ public class DFA {
         return null;
     }
 
-    public Transition searchTransition(String name) {
+    public Transition searchTransition(char symbol) {
         for (Transition transition : transitions) {
-            if (transition.getSymbol().equals(name)) {
+            if (transition.getSymbol() == symbol) {
                 return transition;
             }
         }
@@ -58,7 +58,7 @@ public class DFA {
         this.transitions.removeIf(transition -> transition.getOriginState().equals(stateToDelete) || transition.getDestinationState().equals(stateToDelete));
     }
 
-    public void deleteTransition(String transition) {
+    public void deleteTransition(char transition) {
         Transition transitionToDelete = searchTransition(transition);
         this.transitions.remove(transitionToDelete);
     }
@@ -82,10 +82,10 @@ public class DFA {
         return null;
     }
 
-    public State getNextState(State current, String symbol) {
+    public State getNextState(State current, char symbol) {
         for (Transition transition : this.transitions) {
             if (transition.getOriginState().equals(current) &&
-                    transition.getSymbol().equals(symbol)) {
+                    transition.getSymbol() == symbol) {
                 return transition.getDestinationState();
             }
         }
@@ -111,8 +111,8 @@ public class DFA {
             }
         }
 
-        String[] values = input.split("");
-        for (String symbol : values) {
+        char[] values = input.toCharArray();
+        for (char symbol : values) {
             State nextState = getNextState(currentState, symbol);
             if (nextState == null) {
                 return "El simbolo: " + symbol + " no pertenece al alfabeto del automata";

@@ -3,9 +3,9 @@ package co.edu.uptc.model;
 public class Transition {
     private State originState;
     private State destinationState;
-    private String symbol;
+    private char symbol;
 
-    public Transition(State originState, State destinationState, String symbol) {
+    public Transition(State originState, State destinationState, char symbol) {
         this.originState = originState;
         this.destinationState = destinationState;
         this.symbol = symbol;
@@ -27,11 +27,11 @@ public class Transition {
         this.destinationState = destinationState;
     }
 
-    public String getSymbol() {
+    public char getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(char symbol) {
         this.symbol = symbol;
     }
 

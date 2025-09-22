@@ -29,12 +29,12 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public void addTransition(String to, String from, String value) {
+    public void addTransition(String to, String from, char value) {
         model.addTransition(to, from, value);
     }
 
     @Override
-    public void removeTransition(String transition) {
+    public void removeTransition(char transition) {
         model.removeTransition(transition);
     }
 
