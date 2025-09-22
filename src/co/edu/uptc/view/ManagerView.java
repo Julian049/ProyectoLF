@@ -1,9 +1,14 @@
 package co.edu.uptc.view;
 
+import co.edu.uptc.model.State;
+import co.edu.uptc.model.Transition;
+import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.presenter.ContractMVP;
 
 import javax.swing.*;
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManagerView extends JFrame implements ContractMVP.View {
 
@@ -12,7 +17,7 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     public ManagerView() {
         createFrame();
-        optionsPanel = new OptionsPanel();
+        optionsPanel = new OptionsPanel(this);
     }
 
     @Override
@@ -33,5 +38,28 @@ public class ManagerView extends JFrame implements ContractMVP.View {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(false);
+    }
+
+    public List<String> separateByComma(String text){
+        List<String> list = new ArrayList<String>();
+        String[] array = text.split(",");
+
+        for(String element : array) {
+            list.add(element.trim());
+        }
+
+        return list;
+    }
+
+    public List<Transition> getTransitions(){
+        return presenter.getTransitions();
+    }
+
+    public List<State> getStates(){
+        return presenter.getStates();
+    }
+
+    public void addSymbol(String symbol) throws ObjectAlreadyExists {
+        presenter.addSymbol(symbol);
     }
 }

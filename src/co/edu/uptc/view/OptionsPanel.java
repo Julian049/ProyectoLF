@@ -1,5 +1,9 @@
 package co.edu.uptc.view;
 
+import co.edu.uptc.model.State;
+import co.edu.uptc.model.Transition;
+import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -7,6 +11,7 @@ import java.util.ArrayList;
 
 public class OptionsPanel extends JPanel {
 
+    private ManagerView managerView;
     private JLabel statesTitle;
     private JTextField statesValues;
     private JButton addStatesButton;
@@ -24,14 +29,15 @@ public class OptionsPanel extends JPanel {
     private ArrayList<String> columnNames = new ArrayList<>();
     private ArrayList<String> rowValues = new ArrayList<>();
 
-    public OptionsPanel() {
+    public OptionsPanel(ManagerView managerView) {
         this.setLayout(new GridBagLayout());
-
+        this.managerView = managerView;
         initComponents();
     }
 
     private void initComponents() {
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
         createStatesTitle();
         createStatesValues();
@@ -50,70 +56,110 @@ public class OptionsPanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.WEST;
         this.add(statesTitle, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.7;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(statesValues, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 1;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(addStatesButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.WEST;
         this.add(symbolsTitle, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.7;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(symbolsValue, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 3;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(addSymbolsButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 4;
         gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.WEST;
         this.add(initialStateTitle, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.7;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(initialStateValue, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 5;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(initialStateButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.WEST;
         this.add(finalStateTitle, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 0.7;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(finalStateValue, gbc);
 
         gbc.gridx = 1;
         gbc.gridy = 7;
         gbc.gridwidth = 1;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.weightx = 0.3;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(finalStateButton, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 8;
+        gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.anchor = GridBagConstraints.CENTER;
         JScrollPane scrollPane = new JScrollPane(transitionsTable);
+        scrollPane.setPreferredSize(new Dimension(400, 200));
         this.add(scrollPane, gbc);
     }
-
 
     private void createStatesTitle() {
         statesTitle = new JLabel("Agregue los estados separados por comas (q0,q1,q2)");
@@ -131,6 +177,8 @@ public class OptionsPanel extends JPanel {
             columnNames.add(statesValues.getText());
             tableModel.addColumn(statesValues.getText());
             revalidate();
+            State state = new State(statesValues.getText());
+            managerView.getStates().add(state);
         });
     }
 
@@ -148,8 +196,19 @@ public class OptionsPanel extends JPanel {
         addSymbolsButton = new JButton("Agregar");
         addSymbolsButton.addActionListener(e -> {
             System.out.println(symbolsValue.getText());
-            rowValues.add(symbolsValue.getText());
-            tableModel.addRow(rowValues.toArray());
+            for (String symbol : managerView.separateByComma(symbolsValue.getText())){
+                if (!symbol.isEmpty()) {
+                    try {
+                        managerView.addSymbol(symbol);
+                        Object[] newRow = new Object[tableModel.getColumnCount()];
+                        newRow[0] = symbol;
+                        tableModel.addRow(newRow);
+                        symbolsValue.setText("");
+                    } catch (ObjectAlreadyExists ex) {
+                        System.out.println(ex.getMessage());
+                    }
+                }
+            }
         });
     }
 
@@ -193,7 +252,5 @@ public class OptionsPanel extends JPanel {
         rowValues.add(" ");
         tableModel = new DefaultTableModel(columnNames.toArray(), 0);
         transitionsTable = new JTable(tableModel);
-
-
     }
 }

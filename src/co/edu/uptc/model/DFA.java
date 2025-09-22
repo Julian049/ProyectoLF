@@ -1,5 +1,7 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +9,12 @@ public class DFA {
 
     private List<State> states;
     private List<Transition> transitions;
+    private List<String> symbols;
 
     public DFA() {
         this.states = new ArrayList<State>();
         this.transitions = new ArrayList<Transition>();
+        this.symbols = new ArrayList<>();
     }
 
     public void addState() {
@@ -21,8 +25,13 @@ public class DFA {
     public void addTransition(String from, String to, String symbol) {
         State stateFrom = searchState(from);
         State stateTo = searchState(to);
-        Transition transition  = new Transition(stateFrom, stateTo, symbol);
-        this.transitions.add(transition);
+
+        if (symbols.contains(symbol)) {
+            Transition transition = new Transition(stateFrom, stateTo, symbol);
+            this.transitions.add(transition);
+        } else {
+            System.out.println("El simbolo no existe");
+        }
     }
 
     public State searchState(String name) {
@@ -118,12 +127,32 @@ public class DFA {
         }
     }
 
+    public void addSymbol(String newSymbol) throws ObjectAlreadyExists {
+        if (symbols.isEmpty()) {
+            symbols.add(newSymbol);
+        } else {
+            for (String symbol : this.symbols) {
+                if (symbol.equalsIgnoreCase(newSymbol)) {
+                    ObjectAlreadyExists ex = new ObjectAlreadyExists("El simbolo ya existe");
+                    throw ex;
+                } else {
+                    this.symbols.add(newSymbol.toLowerCase());
+                    break;
+                }
+            }
+        }
+    }
+
     public List<State> getStates() {
         return states;
     }
 
     public List<Transition> getTransitions() {
         return transitions;
+    }
+
+    public List<String> getSymbols() {
+        return symbols;
     }
 
 }

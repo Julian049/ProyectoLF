@@ -3,6 +3,7 @@ package co.edu.uptc.presenter;
 import co.edu.uptc.model.ManagerModel;
 import co.edu.uptc.model.State;
 import co.edu.uptc.model.Transition;
+import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.view.ManagerView;
 
 import java.util.List;
@@ -43,6 +44,11 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
+    public void addSymbol(String symbol) throws ObjectAlreadyExists {
+        model.addSymbol(symbol);
+    }
+
+    @Override
     public void removeState(String state) {
         model.removeState(state);
     }
@@ -61,6 +67,21 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     public void run() {
         makeMVP();
         view.initUI();
+
+        Thread thread = new Thread(() -> {
+            while (true) {
+                for (Transition transition : model.getTransitions()) {
+                    System.out.println(transition);
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        thread.start();
     }
 
     private void makeMVP() {

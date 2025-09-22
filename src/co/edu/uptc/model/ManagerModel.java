@@ -1,5 +1,6 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.presenter.ContractMVP;
 
 import java.util.List;
@@ -45,6 +46,11 @@ public class ManagerModel implements ContractMVP.Model {
     @Override
     public void addState() {
         dfa.addState();
+    }
+
+    @Override
+    public void addSymbol(String symbol) throws ObjectAlreadyExists {
+        dfa.addSymbol(symbol);
     }
 
     @Override

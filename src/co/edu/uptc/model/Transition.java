@@ -34,4 +34,12 @@ public class Transition {
     public void setSymbol(String symbol) {
         this.symbol = symbol;
     }
+
+    @Override
+    public String toString() {
+        return "Transition " +
+                "originState=" + originState +
+                ", destinationState=" + destinationState +
+                ", symbol='" + symbol + '\'';
+    }
 }
