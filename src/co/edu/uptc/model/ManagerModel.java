@@ -63,4 +63,14 @@ public class ManagerModel implements ContractMVP.Model {
         return dfa.validate(value);
     }
 
+    @Override
+    public State searchState(String name){
+        return dfa.searchState(name);
+    }
+
+    @Override
+    public State getInitialState(){
+        return dfa.getInitialState();
+    }
+
 }

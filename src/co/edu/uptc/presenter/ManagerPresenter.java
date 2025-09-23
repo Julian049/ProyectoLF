@@ -3,6 +3,7 @@ package co.edu.uptc.presenter;
 import co.edu.uptc.model.ManagerModel;
 import co.edu.uptc.model.State;
 import co.edu.uptc.model.Transition;
+import co.edu.uptc.model.exceptions.NullException;
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.view.ManagerView;
 
@@ -46,6 +47,24 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     @Override
     public void addSymbol(String symbol) throws ObjectAlreadyExists {
         model.addSymbol(symbol);
+    }
+
+    @Override
+    public State searchState(String name) throws NullException {
+        if (model.searchState(name)==null){
+            NullException ex = new NullException("El estado no existe");
+            throw ex;
+        }
+        return model.searchState(name);
+    }
+
+    @Override
+    public State getInitialState() throws NullException{
+        if (model.getInitialState()!=null){
+            NullException ex = new NullException("Ya hay un estado inicial");
+            throw ex;
+        }
+        return model.getInitialState();
     }
 
     @Override

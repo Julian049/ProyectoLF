@@ -23,7 +23,7 @@ public class DFA {
             this.states.add(newState);
         } else {
             for (State state : states) {
-                if (state.getNombre().equalsIgnoreCase(name)) {
+                if (state.getName().equalsIgnoreCase(name)) {
                     ObjectAlreadyExists ex = new ObjectAlreadyExists("El estado ya existe");
                     throw ex;
                 } else {
@@ -48,7 +48,7 @@ public class DFA {
 
     public State searchState(String name) {
         for (State state : states) {
-            if (state.getNombre().equals(name)) {
+            if (state.getName().equals(name)) {
                 return state;
             }
         }

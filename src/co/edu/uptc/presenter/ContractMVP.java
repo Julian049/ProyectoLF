@@ -2,6 +2,7 @@ package co.edu.uptc.presenter;
 
 import co.edu.uptc.model.State;
 import co.edu.uptc.model.Transition;
+import co.edu.uptc.model.exceptions.NullException;
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface ContractMVP {
         void removeState(String state);
         String validate(String value);
         void addSymbol(String symbol) throws ObjectAlreadyExists;
+        State searchState(String name);
+        State getInitialState();
     }
 
     interface Presenter {
@@ -32,6 +35,8 @@ public interface ContractMVP {
         String validate(String value);
         void addSymbol(String symbol) throws ObjectAlreadyExists;
         void run();
+        State searchState(String name) throws NullException;
+        State getInitialState() throws NullException;
     }
 
     interface View {

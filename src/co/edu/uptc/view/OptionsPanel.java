@@ -1,11 +1,12 @@
 package co.edu.uptc.view;
 
 import co.edu.uptc.model.State;
-import co.edu.uptc.model.Transition;
+import co.edu.uptc.model.exceptions.NullException;
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class OptionsPanel extends JPanel {
     private DefaultTableModel tableModel;
     private ArrayList<String> columnNames = new ArrayList<>();
     private ArrayList<String> rowValues = new ArrayList<>();
+    private State initialState = null;
 
     public OptionsPanel(ManagerView managerView) {
         this.setLayout(new GridBagLayout());
@@ -174,7 +176,7 @@ public class OptionsPanel extends JPanel {
     private void createAddStatesButton() {
         addStatesButton = new JButton("Agregar");
         addStatesButton.addActionListener(e -> {
-            for (String state : managerView.separateByComma(statesValues.getText())){
+            for (String state : managerView.separateByComma(statesValues.getText())) {
                 if (!state.isEmpty()) {
                     try {
                         managerView.addState(state);
@@ -204,7 +206,7 @@ public class OptionsPanel extends JPanel {
         addSymbolsButton = new JButton("Agregar");
         addSymbolsButton.addActionListener(e -> {
             System.out.println(symbolsValue.getText());
-            for (String symbol : managerView.separateByComma(symbolsValue.getText())){
+            for (String symbol : managerView.separateByComma(symbolsValue.getText())) {
                 if (!symbol.isEmpty()) {
                     try {
                         managerView.addSymbol(symbol);
@@ -233,8 +235,56 @@ public class OptionsPanel extends JPanel {
     private void createInitialStateButton() {
         initialStateButton = new JButton("Agregar");
         initialStateButton.addActionListener(e -> {
-            System.out.println(initialStateValue.getText());
+            String inputStateName = initialStateValue.getText().trim();
+
+            try {
+                State newState = managerView.getPresenter().searchState(inputStateName);
+
+                if (initialState == null) {
+                    setAsInitialState(newState);
+                } else {
+                    managerView.verifyChangeState(initialState.getName(), newState);
+                }
+
+                initialStateValue.setText("");
+
+            } catch (NullException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
+    }
+
+    private void setAsInitialState(State state) {
+        state.setInitial(true);
+        initialState = state;
+        updateColumnName(state.getName(), state.getName() + " I");
+    }
+
+    public void changeInitialState(State newState) {
+
+        try {
+            managerView.getPresenter().searchState(initialState.getName()).setInitial(false);
+            managerView.getPresenter().searchState(newState.getName()).setInitial(true);
+        } catch (NullException e) {
+            throw new RuntimeException(e);
+        }
+        updateColumnName(initialState.getName() + " I", initialState.getName());
+
+        updateColumnName(newState.getName(), newState.getName() + " I");
+
+        initialState = newState;
+    }
+
+    private void updateColumnName(String columnName, String newName) {
+        TableColumnModel columnModel = transitionsTable.getTableHeader().getColumnModel();
+        int columnCount = columnModel.getColumnCount();
+
+        for (int i = 0; i < columnCount; i++) {
+            if (columnModel.getColumn(i).getHeaderValue().equals(columnName)) {
+                columnModel.getColumn(i).setHeaderValue(newName);
+            }
+        }
+        transitionsTable.getTableHeader().repaint();
     }
 
     private void createFinalStateTitle() {
@@ -256,7 +306,7 @@ public class OptionsPanel extends JPanel {
     }
 
     private void createTransitionsTable() {
-        columnNames.add("estado");
+        columnNames.add("Estado");
         rowValues.add(" ");
         tableModel = new DefaultTableModel(columnNames.toArray(), 0);
         transitionsTable = new JTable(tableModel);

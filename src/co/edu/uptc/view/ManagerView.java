@@ -6,7 +6,6 @@ import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.presenter.ContractMVP;
 
 import javax.swing.*;
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +13,8 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     private ContractMVP.Presenter presenter;
     private OptionsPanel optionsPanel;
+    private ChangeInitialStateDialog changeInitialStateDialog;
+    private State newInitialState = null;
 
     public ManagerView() {
         createFrame();
@@ -40,22 +41,33 @@ public class ManagerView extends JFrame implements ContractMVP.View {
         setVisible(false);
     }
 
-    public List<String> separateByComma(String text){
+    public List<String> separateByComma(String text) {
         List<String> list = new ArrayList<String>();
         String[] array = text.split(",");
 
-        for(String element : array) {
+        for (String element : array) {
             list.add(element.trim());
         }
 
         return list;
     }
 
-    public List<Transition> getTransitions(){
+    public void verifyChangeState(String currentState, State newState) {
+        newInitialState = newState;
+        changeInitialStateDialog = new ChangeInitialStateDialog(currentState, newState.getName());
+        changeInitialStateDialog.setManagerView(this);
+        changeInitialStateDialog.showDialog();
+    }
+
+    public void changeInitialState() {
+        optionsPanel.changeInitialState(newInitialState);
+    }
+
+    public List<Transition> getTransitions() {
         return presenter.getTransitions();
     }
 
-    public List<State> getStates(){
+    public List<State> getStates() {
         return presenter.getStates();
     }
 
@@ -65,5 +77,9 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     public void addState(String nameState) throws ObjectAlreadyExists {
         presenter.addState(nameState);
+    }
+
+    public ContractMVP.Presenter getPresenter() {
+        return presenter;
     }
 }
