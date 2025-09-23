@@ -30,6 +30,7 @@ public class OptionsPanel extends JPanel {
     private DefaultTableModel tableModel;
     private ArrayList<String> columnNames = new ArrayList<>();
     private ArrayList<String> rowValues = new ArrayList<>();
+    private boolean userChangeTable = true;
     private State initialState = null;
 
     public OptionsPanel(ManagerView managerView) {
@@ -177,6 +178,7 @@ public class OptionsPanel extends JPanel {
     private void createAddStatesButton() {
         addStatesButton = new JButton("Agregar");
         addStatesButton.addActionListener(e -> {
+            userChangeTable = false;
             for (String state : managerView.separateByComma(statesValues.getText())) {
                 if (!state.isEmpty()) {
                     try {
@@ -186,10 +188,11 @@ public class OptionsPanel extends JPanel {
                         revalidate();
                         statesValues.setText("");
                     } catch (ObjectAlreadyExists ex) {
-                        System.out.println(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
+            userChangeTable = true;
         });
     }
 
@@ -206,7 +209,7 @@ public class OptionsPanel extends JPanel {
     private void createAddSymbolsButton() {
         addSymbolsButton = new JButton("Agregar");
         addSymbolsButton.addActionListener(e -> {
-            System.out.println(symbolsValue.getText());
+            userChangeTable = false;
             for (String symbol : managerView.separateByComma(symbolsValue.getText())) {
                 if (!symbol.isEmpty()) {
                     try {
@@ -216,10 +219,11 @@ public class OptionsPanel extends JPanel {
                         tableModel.addRow(newRow);
                         symbolsValue.setText("");
                     } catch (ObjectAlreadyExists ex) {
-                        System.out.println(ex.getMessage());
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
+            userChangeTable = true;
         });
     }
 
@@ -236,6 +240,7 @@ public class OptionsPanel extends JPanel {
     private void createInitialStateButton() {
         initialStateButton = new JButton("Agregar");
         initialStateButton.addActionListener(e -> {
+            userChangeTable = false;
             String inputStateName = initialStateValue.getText().trim();
 
             try {
@@ -252,26 +257,27 @@ public class OptionsPanel extends JPanel {
             } catch (NullException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
+            userChangeTable = true;
         });
     }
 
     private void setAsInitialState(State state) {
         state.setInitial(true);
         initialState = state;
-        updateColumnName(state.getName(), "→ "+ state.getName() );
+        updateColumnName(state.getName(), "→ " + state.getName());
     }
 
     public void changeInitialState(State newState) {
-
+        userChangeTable = false;
         try {
             managerView.getPresenter().searchState(initialState.getName()).setInitial(false);
             managerView.getPresenter().searchState(newState.getName()).setInitial(true);
         } catch (NullException e) {
             throw new RuntimeException(e);
         }
-        updateColumnName("→ " + initialState.getName() , initialState.getName());
+        updateColumnName("→ " + initialState.getName(), initialState.getName());
 
-        updateColumnName(newState.getName(), "→ " + newState.getName() );
+        updateColumnName(newState.getName(), "→ " + newState.getName());
 
         initialState = newState;
     }
@@ -302,6 +308,7 @@ public class OptionsPanel extends JPanel {
     private void createFinalStateButton() {
         finalStateButton = new JButton("Agregar");
         finalStateButton.addActionListener(e -> {
+            userChangeTable = false;
             List<String> finalStates = managerView.separateByComma(finalStateValue.getText());
             if (!finalStates.isEmpty()) {
                 for (String state : finalStates) {
@@ -315,6 +322,7 @@ public class OptionsPanel extends JPanel {
                 }
             }
             finalStateValue.setText("");
+            userChangeTable = true;
         });
     }
 
@@ -330,5 +338,20 @@ public class OptionsPanel extends JPanel {
         rowValues.add(" ");
         tableModel = new DefaultTableModel(columnNames.toArray(), 0);
         transitionsTable = new JTable(tableModel);
+        tableModel.addTableModelListener(e -> {
+            if (userChangeTable) {
+                int row = e.getFirstRow();
+                int column = e.getColumn();
+                String state = (String) tableModel.getValueAt(row, column);
+                try {
+                    managerView.getPresenter().searchState(state);
+                } catch (NullException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    userChangeTable = false;
+                    tableModel.setValueAt("", row, column);
+                    userChangeTable = true;
+                }
+            }
+        });
     }
 }
