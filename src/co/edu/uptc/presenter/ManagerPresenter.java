@@ -31,8 +31,8 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public void addTransition(String to, String from, char value) {
-        model.addTransition(to, from, value);
+    public void addTransition(String currentValue,String to, String from, char value) {
+        model.addTransition(currentValue,to, from, value);
     }
 
     @Override
@@ -97,6 +97,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
             while (true) {
                 for (Transition transition : model.getTransitions()) {
                     System.out.println(transition);
+                    System.out.println(getTransitions().size());
                 }
                 try {
                     Thread.sleep(1000);
@@ -128,37 +129,37 @@ public class ManagerPresenter implements ContractMVP.Presenter {
             model.addSymbol("2");
 
 // Agregar transiciones
-            model.addTransition("A", "B", Character.valueOf('0'));
-            model.addTransition("A", "C", Character.valueOf('1'));
-            model.addTransition("A", "D", Character.valueOf('2'));
-
-            model.addTransition("B", "E", Character.valueOf('0'));
-            model.addTransition("B", "F", Character.valueOf('1'));
-            model.addTransition("B", "A", Character.valueOf('2'));
-
-            model.addTransition("C", "G", Character.valueOf('0'));
-            model.addTransition("C", "H", Character.valueOf('1'));
-            model.addTransition("C", "B", Character.valueOf('2'));
-
-            model.addTransition("D", "A", Character.valueOf('0'));
-            model.addTransition("D", "C", Character.valueOf('1'));
-            model.addTransition("D", "H", Character.valueOf('2'));
-
-            model.addTransition("E", "E", Character.valueOf('0'));
-            model.addTransition("E", "F", Character.valueOf('1'));
-            model.addTransition("E", "G", Character.valueOf('2'));
-
-            model.addTransition("F", "H", Character.valueOf('0'));
-            model.addTransition("F", "A", Character.valueOf('1'));
-            model.addTransition("F", "B", Character.valueOf('2'));
-
-            model.addTransition("G", "C", Character.valueOf('0'));
-            model.addTransition("G", "D", Character.valueOf('1'));
-            model.addTransition("G", "H", Character.valueOf('2'));
-
-            model.addTransition("H", "H", Character.valueOf('0'));
-            model.addTransition("H", "H", Character.valueOf('1'));
-            model.addTransition("H", "H", Character.valueOf('2'));
+//            model.addTransition("A", "B", Character.valueOf('0'));
+//            model.addTransition("A", "C", Character.valueOf('1'));
+//            model.addTransition("A", "D", Character.valueOf('2'));
+//
+//            model.addTransition("B", "E", Character.valueOf('0'));
+//            model.addTransition("B", "F", Character.valueOf('1'));
+//            model.addTransition("B", "A", Character.valueOf('2'));
+//
+//            model.addTransition("C", "G", Character.valueOf('0'));
+//            model.addTransition("C", "H", Character.valueOf('1'));
+//            model.addTransition("C", "B", Character.valueOf('2'));
+//
+//            model.addTransition("D", "A", Character.valueOf('0'));
+//            model.addTransition("D", "C", Character.valueOf('1'));
+//            model.addTransition("D", "H", Character.valueOf('2'));
+//
+//            model.addTransition("E", "E", Character.valueOf('0'));
+//            model.addTransition("E", "F", Character.valueOf('1'));
+//            model.addTransition("E", "G", Character.valueOf('2'));
+//
+//            model.addTransition("F", "H", Character.valueOf('0'));
+//            model.addTransition("F", "A", Character.valueOf('1'));
+//            model.addTransition("F", "B", Character.valueOf('2'));
+//
+//            model.addTransition("G", "C", Character.valueOf('0'));
+//            model.addTransition("G", "D", Character.valueOf('1'));
+//            model.addTransition("G", "H", Character.valueOf('2'));
+//
+//            model.addTransition("H", "H", Character.valueOf('0'));
+//            model.addTransition("H", "H", Character.valueOf('1'));
+//            model.addTransition("H", "H", Character.valueOf('2'));
 
 
         } catch (ObjectAlreadyExists e) {
@@ -166,7 +167,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         }
 
         view.addInfo();
-        //thread.start();
+        thread.start();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package co.edu.uptc.view;
 
 import co.edu.uptc.model.State;
+import co.edu.uptc.model.Transition;
 import co.edu.uptc.model.exceptions.NullException;
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 
@@ -8,6 +9,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -335,26 +337,37 @@ public class OptionsPanel extends JPanel {
         columnNames.add("Estado");
         tableModel = new DefaultTableModel(columnNames.toArray(), 0);
         transitionsTable = new JTable(tableModel);
-        tableModel.addTableModelListener(e -> {
-            if (userChangeTable) {
-                int row = e.getFirstRow();
-                int column = e.getColumn();
-                char firstValueRow = tableModel.getValueAt(row, 0).toString().charAt(0);
-                String columnName = tableModel.getColumnName(column);
-                String value = tableModel.getValueAt(row, column).toString();
-                String state = (String) tableModel.getValueAt(row, column);
-                try {
-                    managerView.getPresenter().searchState(state);
-                    managerView.getPresenter().addTransition(value, columnName, firstValueRow);
-                } catch (NullException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    userChangeTable = false;
-                    tableModel.setValueAt("", row, column);
-                    userChangeTable = true;
+
+
+        Action action = new AbstractAction() {
+            public void actionPerformed(ActionEvent e) {
+                if (userChangeTable) {
+                    TableCellListener tcl = (TableCellListener) e.getSource();
+
+                    int row = tcl.getRow();
+                    int column = tcl.getColumn();
+                    String oldValue = tcl.getOldValue() != null ? tcl.getOldValue().toString() : "";
+                    String newValue = tcl.getNewValue() != null ? tcl.getNewValue().toString() : "";
+
+                    char firstValueRow = tableModel.getValueAt(row, 0).toString().charAt(0);
+                    String columnName = tableModel.getColumnName(column);
+
+                    try {
+                        managerView.getPresenter().searchState(newValue);
+                        managerView.getPresenter().addTransition(oldValue, newValue, columnName, firstValueRow);
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        userChangeTable = false;
+                        tableModel.setValueAt("", row, column);
+                        userChangeTable = true;
+                    }
                 }
             }
-        });
+        };
+
+        TableCellListener tcl = new TableCellListener(transitionsTable, action);
     }
+
 
     public void updateInterface() {
         userChangeTable = false;
@@ -368,6 +381,36 @@ public class OptionsPanel extends JPanel {
             newRow[0] = symbol;
             tableModel.addRow(newRow);
         }
+
+        List<Transition> transitions = managerView.getPresenter().getTransitions();
+        for (Transition transition : transitions) {
+            int[] rowAndCol = updateTableCells(String.valueOf(transition.getSymbol()), transition.getOriginState().getName());
+            System.out.println("VOy a guardar el valor en la fila: " + rowAndCol[1] + " y en la columna: " + rowAndCol[0]);
+            tableModel.setValueAt(transition.getDestinationState().getName(), rowAndCol[0], rowAndCol[1]);
+        }
         userChangeTable = true;
+    }
+
+    private int[] updateTableCells(String rowValue, String columnValue) {
+        int[] result = new int[2];
+        for (int i = 0; i < tableModel.getRowCount(); i++) {
+            Object value = tableModel.getValueAt(i, 0);
+            if (value != null) {
+                String row = value.toString();
+                if (row.equals(rowValue)) {
+                    result[0] = i;
+                    break;
+                }
+            }
+        }
+        for (int j = 0; j < tableModel.getColumnCount(); j++) {
+            String col = tableModel.getColumnName(j);
+            if (col.equals(columnValue)) {
+                result[1] = j;
+                break;
+            }
+        }
+
+        return result;
     }
 }

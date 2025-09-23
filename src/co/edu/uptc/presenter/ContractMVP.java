@@ -14,7 +14,7 @@ public interface ContractMVP {
         void setPresenter(Presenter presenter);
         List<State> getStates();
         List<Transition> getTransitions();
-        void addTransition(String to, String from, char value);
+        void addTransition(String currentValue,String to, String from, char value);
         void removeTransition(char transition);
         void addState(String name) throws ObjectAlreadyExists;
         void removeState(String state);
@@ -31,7 +31,7 @@ public interface ContractMVP {
         void setView(View view);
         List<State> getStates();
         List<Transition> getTransitions();
-        void addTransition(String to, String from, char value);
+        void addTransition(String currentValue,String to, String from, char value);
         void removeTransition(char transition);
         void addState(String name) throws ObjectAlreadyExists;
         void removeState(String state);

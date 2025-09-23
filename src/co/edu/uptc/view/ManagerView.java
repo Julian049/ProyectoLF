@@ -40,7 +40,8 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 //        gbc.gridx = 1;
 //        this.add(runSimulatorPanel);
 
-        this.add(runSimulatorPanel);
+        //this.add(runSimulatorPanel);
+        this.add(optionsPanel);
         setVisible(true);
     }
 

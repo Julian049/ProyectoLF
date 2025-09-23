@@ -34,8 +34,8 @@ public class ManagerModel implements ContractMVP.Model {
     }
 
     @Override
-    public void addTransition(String to, String from, char value) {
-        dfa.addTransition(to, from, value);
+    public void addTransition(String currentValue, String to, String from, char value) {
+        dfa.addTransition(currentValue, to, from, value);
     }
 
     @Override

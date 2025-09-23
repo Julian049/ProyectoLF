@@ -35,18 +35,26 @@ public class DFA {
         }
     }
 
-    public void addTransition(String from, String to, char symbol) {
-        State stateFrom = searchState(from);
-        State stateTo = searchState(to);
-        System.out.println(symbols.toString());
-        if (symbols.contains(symbol)) {
-            Transition transition = new Transition(stateFrom, stateTo, symbol);
-            this.transitions.add(transition);
-            System.out.println("Transicion añadida correctamente");
+    public void addTransition(String currentValue, String to, String from, char symbol) {
+        if (currentValue.isEmpty()) {
+            State stateFrom = searchState(from);
+            State stateTo = searchState(to);
+            System.out.println(symbols.toString());
+            if (symbols.contains(symbol)) {
+                Transition transition = new Transition(stateFrom, stateTo, symbol);
+                this.transitions.add(transition);
+                System.out.println("Transicion añadida correctamente");
+            } else {
+                System.out.println("El simbolo no existe");
+            }
         } else {
-            System.out.println("El simbolo no existe");
+            System.out.println("Desde " + from);
+            System.out.println("Hacia " + to);
+            System.out.println(symbols.toString());
+            updateTransition(searchTransition(symbol, from, currentValue), to);
         }
     }
+
 
     private boolean searchSymbol(char Symbol) {
         boolean result = false;
@@ -65,9 +73,12 @@ public class DFA {
         return null;
     }
 
-    public Transition searchTransition(char symbol) {
+    public Transition searchTransition(char symbol, String from, String to) {
         for (Transition transition : transitions) {
-            if (transition.getSymbol() == symbol) {
+            boolean sameSymbol = transition.getSymbol() == symbol;
+            boolean sameOriginState = transition.getOriginState().getName().equalsIgnoreCase(from);
+            boolean sameDestinationState = transition.getDestinationState().getName().equalsIgnoreCase(to);
+            if (sameSymbol && sameOriginState && sameDestinationState) {
                 return transition;
             }
         }
@@ -81,8 +92,8 @@ public class DFA {
     }
 
     public void deleteTransition(char transition) {
-        Transition transitionToDelete = searchTransition(transition);
-        this.transitions.remove(transitionToDelete);
+//        Transition transitionToDelete = searchTransition(transition);
+//        this.transitions.remove(transitionToDelete);
     }
 
     public void updateState(State state) {
@@ -90,9 +101,8 @@ public class DFA {
         this.states.add(state);
     }
 
-    public void updateTransition(Transition transition) {
-        this.transitions.remove(transition);
-        this.transitions.add(transition);
+    public void updateTransition(Transition transition, String newTo) {
+        transition.setDestinationState(searchState(newTo));
     }
 
     public State getInitialState() {
