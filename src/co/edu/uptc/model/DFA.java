@@ -2,6 +2,7 @@ package co.edu.uptc.model;
 
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class DFA {
 
     private List<State> states;
     private List<Transition> transitions;
-    private List<String> symbols;
+    private List<Character> symbols;
 
     public DFA() {
         this.states = new ArrayList<State>();
@@ -37,18 +38,27 @@ public class DFA {
     public void addTransition(String from, String to, char symbol) {
         State stateFrom = searchState(from);
         State stateTo = searchState(to);
-
+        System.out.println(symbols.toString());
         if (symbols.contains(symbol)) {
             Transition transition = new Transition(stateFrom, stateTo, symbol);
             this.transitions.add(transition);
+            System.out.println("Transicion añadida correctamente");
         } else {
             System.out.println("El simbolo no existe");
         }
     }
 
+    private boolean searchSymbol(char Symbol) {
+        boolean result = false;
+        for (char symbol : symbols) {
+
+        }
+        return result;
+    }
+
     public State searchState(String name) {
         for (State state : states) {
-            if (state.getName().equals(name)) {
+            if (state.getName().equalsIgnoreCase(name)) {
                 return state;
             }
         }
@@ -140,19 +150,13 @@ public class DFA {
     }
 
     public void addSymbol(String newSymbol) throws ObjectAlreadyExists {
-        if (symbols.isEmpty()) {
-            symbols.add(newSymbol);
-        } else {
-            for (String symbol : this.symbols) {
-                if (symbol.equalsIgnoreCase(newSymbol)) {
-                    ObjectAlreadyExists ex = new ObjectAlreadyExists("El simbolo ya existe");
-                    throw ex;
-                } else {
-                    this.symbols.add(newSymbol.toLowerCase());
-                    break;
-                }
+        char symbolChar = newSymbol.toLowerCase().charAt(0);
+        for (Character c : symbols) {
+            if (Character.toLowerCase(c) == symbolChar) {
+                throw new ObjectAlreadyExists("El símbolo ya existe");
             }
         }
+        symbols.add(symbolChar);
     }
 
     public List<State> getStates() {
@@ -163,7 +167,7 @@ public class DFA {
         return transitions;
     }
 
-    public List<String> getSymbols() {
+    public List<Character> getSymbols() {
         return symbols;
     }
 

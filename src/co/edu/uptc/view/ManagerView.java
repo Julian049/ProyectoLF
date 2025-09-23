@@ -32,6 +32,11 @@ public class ManagerView extends JFrame implements ContractMVP.View {
         setVisible(true);
     }
 
+    @Override
+    public void addInfo(){
+        optionsPanel.updateInterface();
+    }
+
     private void createFrame() {
         setTitle("Simulador de automatas deterministas");
         setSize(800, 800);

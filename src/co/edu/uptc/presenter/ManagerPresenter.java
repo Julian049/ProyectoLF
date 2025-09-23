@@ -40,7 +40,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public void addState(String name) throws ObjectAlreadyExists{
+    public void addState(String name) throws ObjectAlreadyExists {
         model.addState(name);
     }
 
@@ -51,7 +51,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
 
     @Override
     public State searchState(String name) throws NullException {
-        if (model.searchState(name)==null){
+        if (model.searchState(name) == null) {
             NullException ex = new NullException("El estado no existe");
             throw ex;
         }
@@ -59,12 +59,17 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public State getInitialState() throws NullException{
-        if (model.getInitialState()!=null){
+    public State getInitialState() throws NullException {
+        if (model.getInitialState() != null) {
             NullException ex = new NullException("Ya hay un estado inicial");
             throw ex;
         }
         return model.getInitialState();
+    }
+
+    @Override
+    public List<Character> getSymbols() {
+        return model.getSymbols();
     }
 
     @Override
@@ -100,6 +105,19 @@ public class ManagerPresenter implements ContractMVP.Presenter {
             }
         });
 
+        //DATOS DE PRUEBA
+
+
+        try {
+            model.addState("A");
+            model.addState("B");
+            model.addSymbol("1");
+            model.addSymbol("0");
+        } catch (ObjectAlreadyExists e) {
+            throw new RuntimeException(e);
+        }
+
+        view.addInfo();
         thread.start();
     }
 

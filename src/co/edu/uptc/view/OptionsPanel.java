@@ -342,9 +342,13 @@ public class OptionsPanel extends JPanel {
             if (userChangeTable) {
                 int row = e.getFirstRow();
                 int column = e.getColumn();
+                char firstValueRow = tableModel.getValueAt(row, 0).toString().charAt(0);
+                String columnName = tableModel.getColumnName(column);
+                String value = tableModel.getValueAt(row, column).toString();
                 String state = (String) tableModel.getValueAt(row, column);
                 try {
                     managerView.getPresenter().searchState(state);
+                    managerView.getPresenter().addTransition(value, columnName, firstValueRow);
                 } catch (NullException ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     userChangeTable = false;
@@ -353,5 +357,21 @@ public class OptionsPanel extends JPanel {
                 }
             }
         });
+    }
+
+    public void updateInterface() {
+        userChangeTable = false;
+        for (State state : managerView.getPresenter().getStates()) {
+            columnNames.add(state.getName());
+            tableModel.addColumn(state.getName());
+            revalidate();
+        }
+
+        for (char symbol : managerView.getPresenter().getSymbols()) {
+            Object[] newRow = new Object[tableModel.getColumnCount()];
+            newRow[0] = symbol;
+            tableModel.addRow(newRow);
+        }
+        userChangeTable = true;
     }
 }

@@ -21,6 +21,7 @@ public interface ContractMVP {
         void addSymbol(String symbol) throws ObjectAlreadyExists;
         State searchState(String name);
         State getInitialState();
+        List<Character> getSymbols();
     }
 
     interface Presenter {
@@ -37,11 +38,12 @@ public interface ContractMVP {
         void run();
         State searchState(String name) throws NullException;
         State getInitialState() throws NullException;
+        List<Character> getSymbols();
     }
 
     interface View {
         void setPresenter(Presenter presenter);
         void initUI();
-
+        void addInfo();
     }
 }

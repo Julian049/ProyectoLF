@@ -44,8 +44,13 @@ public class ManagerModel implements ContractMVP.Model {
     }
 
     @Override
-    public void addState(String name) throws ObjectAlreadyExists{
+    public void addState(String name) throws ObjectAlreadyExists {
         dfa.addState(name);
+    }
+
+    @Override
+    public List<Character> getSymbols() {
+        return dfa.getSymbols();
     }
 
     @Override
@@ -64,12 +69,12 @@ public class ManagerModel implements ContractMVP.Model {
     }
 
     @Override
-    public State searchState(String name){
+    public State searchState(String name) {
         return dfa.searchState(name);
     }
 
     @Override
-    public State getInitialState(){
+    public State getInitialState() {
         return dfa.getInitialState();
     }
 
