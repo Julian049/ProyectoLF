@@ -119,34 +119,48 @@ public class DFA {
     }
 
     public String validate(String input) {
+
+        StringBuilder output = new StringBuilder("Evaluando cadena " + input + " \n");
+        boolean initialState = false;
         State currentState = getInitialState();
 
         if (currentState == null) {
-            return "No se ha definido un estado inicial";
+            output.append("No se ha definido un estado inicial");
+        } else {
+            initialState = true;
         }
 
-        if (input.isEmpty()) {
+        if (initialState && input.isEmpty()) {
             if (currentState.isFinal()) {
-                return "Cadena aceptada";
+                output.append("Proceso finalizado. El estado final es " + currentState.getName() + "\n");
+                output.append("Resultado: La cadena \"" + input + "\" es ACEPTADA");
             } else {
-                return "Cadena rechazada";
+                output.append("Proceso finalizado. El estado final es " + currentState.getName() + "\n");
+                output.append("Resultado: La cadena \"" + input + "\" es RECHAZADA");
             }
         }
+
 
         char[] values = input.toCharArray();
         for (char symbol : values) {
             State nextState = getNextState(currentState, symbol);
             if (nextState == null) {
-                return "El simbolo: " + symbol + " no pertenece al alfabeto del automata";
+                output.append("El simbolo: ").append(symbol).append(" no pertenece al alfabeto del automata \n");
+                break;
             }
+            output.append("Desde el estado " + currentState.getName() + " con el símbolo '" + symbol + "' se transita al estado " + nextState.getName() + "\n");
             currentState = nextState;
         }
 
         if (isFinalState(currentState)) {
-            return "Cadena aceptada";
+            output.append("Proceso finalizado. El estado final es " + currentState.getName() + "\n");
+            output.append("Resultado: La cadena \"" + input + "\" es ACEPTADA");
         } else {
-            return "Cadena rechazada";
+            output.append("Proceso finalizado. El estado final es " + currentState.getName() + "\n");
+            output.append("Resultado: La cadena \"" + input + "\" es RECHAZADA");
         }
+
+        return output.toString();
     }
 
     public void addSymbol(String newSymbol) throws ObjectAlreadyExists {
