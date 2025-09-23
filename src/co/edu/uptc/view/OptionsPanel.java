@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OptionsPanel extends JPanel {
 
@@ -257,7 +258,7 @@ public class OptionsPanel extends JPanel {
     private void setAsInitialState(State state) {
         state.setInitial(true);
         initialState = state;
-        updateColumnName(state.getName(), state.getName() + " I");
+        updateColumnName(state.getName(), "→ "+ state.getName() );
     }
 
     public void changeInitialState(State newState) {
@@ -268,9 +269,9 @@ public class OptionsPanel extends JPanel {
         } catch (NullException e) {
             throw new RuntimeException(e);
         }
-        updateColumnName(initialState.getName() + " I", initialState.getName());
+        updateColumnName("→ " + initialState.getName() , initialState.getName());
 
-        updateColumnName(newState.getName(), newState.getName() + " I");
+        updateColumnName(newState.getName(), "→ " + newState.getName() );
 
         initialState = newState;
     }
@@ -301,8 +302,27 @@ public class OptionsPanel extends JPanel {
     private void createFinalStateButton() {
         finalStateButton = new JButton("Agregar");
         finalStateButton.addActionListener(e -> {
-            System.out.println(finalStateValue.getText());
+            List<String> finalStates = managerView.separateByComma(finalStateValue.getText());
+            if (!finalStates.isEmpty()) {
+                for (String state : finalStates) {
+                    try {
+                        managerView.getPresenter().searchState(state).setFinal(true);
+                        String currentName = getCurrentColumnName(state);
+                        updateColumnName(currentName, currentName + " ⭕");
+                    } catch (NullException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+            finalStateValue.setText("");
         });
+    }
+
+    private String getCurrentColumnName(String stateName) {
+        if (initialState != null && initialState.getName().equals(stateName)) {
+            return "→ " + stateName;
+        }
+        return stateName;
     }
 
     private void createTransitionsTable() {
