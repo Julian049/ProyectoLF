@@ -33,6 +33,7 @@ public class ManagerView extends JFrame implements ContractMVP.View {
     public void initUI() {
         GridBagConstraints gbc = new GridBagConstraints();
 
+<<<<<<< Updated upstream
         gbc.gridx = 0;
         gbc.gridy = 0;
         this.add(optionsPanel);
@@ -43,6 +44,11 @@ public class ManagerView extends JFrame implements ContractMVP.View {
         //this.add(runSimulatorPanel);
         //this.add(optionsPanel);
         setVisible(true);
+=======
+       // this.add(runSimulatorPanel);
+       this.add(optionsPanel); 
+       setVisible(true);
+>>>>>>> Stashed changes
     }
 
     @Override
