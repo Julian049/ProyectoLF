@@ -31,17 +31,17 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     @Override
     public void initUI() {
-//        GridBagConstraints gbc = new GridBagConstraints();
-//
-//        gbc.gridx = 0;
-//        gbc.gridy = 0;
-//        this.add(optionsPanel);
-//
-//        gbc.gridx = 1;
-//        this.add(runSimulatorPanel);
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        this.add(optionsPanel);
+
+        gbc.gridx = 1;
+        this.add(runSimulatorPanel);
 
         //this.add(runSimulatorPanel);
-        this.add(optionsPanel);
+        //this.add(optionsPanel);
         setVisible(true);
     }
 

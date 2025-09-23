@@ -111,7 +111,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
 
 
         try {
-// Agregar estados
+// Estados
             model.addState("A");
             model.searchState("A").setInitial(true);
             model.addState("B");
@@ -128,38 +128,34 @@ public class ManagerPresenter implements ContractMVP.Presenter {
             model.addSymbol("1");
             model.addSymbol("2");
 
-// Agregar transiciones
-//            model.addTransition("A", "B", Character.valueOf('0'));
-//            model.addTransition("A", "C", Character.valueOf('1'));
-//            model.addTransition("A", "D", Character.valueOf('2'));
-//
-//            model.addTransition("B", "E", Character.valueOf('0'));
-//            model.addTransition("B", "F", Character.valueOf('1'));
-//            model.addTransition("B", "A", Character.valueOf('2'));
-//
-//            model.addTransition("C", "G", Character.valueOf('0'));
-//            model.addTransition("C", "H", Character.valueOf('1'));
-//            model.addTransition("C", "B", Character.valueOf('2'));
-//
-//            model.addTransition("D", "A", Character.valueOf('0'));
-//            model.addTransition("D", "C", Character.valueOf('1'));
-//            model.addTransition("D", "H", Character.valueOf('2'));
-//
-//            model.addTransition("E", "E", Character.valueOf('0'));
-//            model.addTransition("E", "F", Character.valueOf('1'));
-//            model.addTransition("E", "G", Character.valueOf('2'));
-//
-//            model.addTransition("F", "H", Character.valueOf('0'));
-//            model.addTransition("F", "A", Character.valueOf('1'));
-//            model.addTransition("F", "B", Character.valueOf('2'));
-//
-//            model.addTransition("G", "C", Character.valueOf('0'));
-//            model.addTransition("G", "D", Character.valueOf('1'));
-//            model.addTransition("G", "H", Character.valueOf('2'));
-//
-//            model.addTransition("H", "H", Character.valueOf('0'));
-//            model.addTransition("H", "H", Character.valueOf('1'));
-//            model.addTransition("H", "H", Character.valueOf('2'));
+// Agregar transiciones (AFD - determinista)
+            model.addTransition("", "D", "A", Character.valueOf('0'));
+            model.addTransition("", "F", "A", Character.valueOf('1'));
+            model.addTransition("", "B", "A", Character.valueOf('2'));
+            model.addTransition("", "A", "B", Character.valueOf('0'));
+            model.addTransition("", "A", "B", Character.valueOf('1'));
+            model.addTransition("", "C", "B", Character.valueOf('2'));
+            model.addTransition("", "G", "C", Character.valueOf('0'));
+            model.addTransition("", "A", "C", Character.valueOf('1'));
+            model.addTransition("", "B", "C", Character.valueOf('2'));
+            model.addTransition("", "A", "D", Character.valueOf('0'));
+            model.addTransition("", "G", "D", Character.valueOf('1'));
+            model.addTransition("", "A", "D", Character.valueOf('2'));
+            model.addTransition("", "E", "E", Character.valueOf('0'));
+            model.addTransition("", "F", "E", Character.valueOf('1'));
+            model.addTransition("", "G", "E", Character.valueOf('2'));
+            model.addTransition("", "H", "F", Character.valueOf('0'));
+            model.addTransition("", "E", "F", Character.valueOf('1'));
+            model.addTransition("", "B", "F", Character.valueOf('2'));
+            model.addTransition("", "C", "G", Character.valueOf('0'));
+            model.addTransition("", "D", "G", Character.valueOf('1'));
+            model.addTransition("", "E", "G", Character.valueOf('2'));
+            model.addTransition("", "H", "H", Character.valueOf('0'));
+            model.addTransition("", "H", "H", Character.valueOf('1'));
+            model.addTransition("", "H", "H", Character.valueOf('2'));
+
+
+
 
 
         } catch (ObjectAlreadyExists e) {

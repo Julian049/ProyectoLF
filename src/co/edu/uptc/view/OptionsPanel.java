@@ -32,6 +32,8 @@ public class OptionsPanel extends JPanel {
     private DefaultTableModel tableModel;
     private boolean userChangeTable = true;
     private State initialState = null;
+    private JButton importDFAButton;
+    private JButton exportDFAButton;
 
     public OptionsPanel(ManagerView managerView) {
         this.setLayout(new GridBagLayout());
@@ -56,6 +58,8 @@ public class OptionsPanel extends JPanel {
         createFinalStateValue();
         createFinalStateButton();
         createTransitionsTable();
+        createImportDFAButton();
+        createExportDFAButton();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -163,6 +167,15 @@ public class OptionsPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(transitionsTable);
         scrollPane.setPreferredSize(new Dimension(400, 200));
         this.add(scrollPane, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.gridwidth = 1;
+        this.add(importDFAButton, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 9;
+        this.add(exportDFAButton, gbc);
     }
 
     private void createStatesTitle() {
@@ -366,6 +379,20 @@ public class OptionsPanel extends JPanel {
         };
 
         TableCellListener tcl = new TableCellListener(transitionsTable, action);
+    }
+
+    private void createImportDFAButton() {
+        importDFAButton = new JButton("Importar");
+        importDFAButton.addActionListener(e -> {
+            System.out.println("Importar");
+        });
+    }
+
+    private void createExportDFAButton() {
+        exportDFAButton = new JButton("Exportar");
+        exportDFAButton.addActionListener(e -> {
+            System.out.println("Exportar");
+        });
     }
 
 
