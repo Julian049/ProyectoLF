@@ -78,4 +78,10 @@ public class ManagerModel implements ContractMVP.Model {
         return dfa.getInitialState();
     }
 
+    @Override
+    public DFA getDFA() {
+        return this.dfa;
+    }
+
+
 }

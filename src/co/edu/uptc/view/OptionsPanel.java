@@ -28,8 +28,6 @@ public class OptionsPanel extends JPanel {
     private JButton finalStateButton;
     private JTable transitionsTable;
     private DefaultTableModel tableModel;
-    private ArrayList<String> columnNames = new ArrayList<>();
-    private ArrayList<String> rowValues = new ArrayList<>();
     private boolean userChangeTable = true;
     private State initialState = null;
 
@@ -183,7 +181,6 @@ public class OptionsPanel extends JPanel {
                 if (!state.isEmpty()) {
                     try {
                         managerView.addState(state);
-                        columnNames.add(state);
                         tableModel.addColumn(state);
                         revalidate();
                         statesValues.setText("");
@@ -334,8 +331,8 @@ public class OptionsPanel extends JPanel {
     }
 
     private void createTransitionsTable() {
+        ArrayList<String> columnNames = new ArrayList<>();
         columnNames.add("Estado");
-        rowValues.add(" ");
         tableModel = new DefaultTableModel(columnNames.toArray(), 0);
         transitionsTable = new JTable(tableModel);
         tableModel.addTableModelListener(e -> {
@@ -362,7 +359,6 @@ public class OptionsPanel extends JPanel {
     public void updateInterface() {
         userChangeTable = false;
         for (State state : managerView.getPresenter().getStates()) {
-            columnNames.add(state.getName());
             tableModel.addColumn(state.getName());
             revalidate();
         }

@@ -1,5 +1,6 @@
 package co.edu.uptc.presenter;
 
+import co.edu.uptc.model.DFA;
 import co.edu.uptc.model.ManagerModel;
 import co.edu.uptc.model.State;
 import co.edu.uptc.model.Transition;
@@ -109,17 +110,70 @@ public class ManagerPresenter implements ContractMVP.Presenter {
 
 
         try {
+// Agregar estados
             model.addState("A");
+            model.searchState("A").setInitial(true);
             model.addState("B");
-            model.addSymbol("1");
+            model.addState("C");
+            model.addState("D");
+            model.addState("E");
+            model.addState("F");
+            model.addState("G");
+            model.addState("H");
+            model.searchState("H").setFinal(true);
+
+// Agregar símbolos
             model.addSymbol("0");
+            model.addSymbol("1");
+            model.addSymbol("2");
+
+// Agregar transiciones
+            model.addTransition("A", "B", Character.valueOf('0'));
+            model.addTransition("A", "C", Character.valueOf('1'));
+            model.addTransition("A", "D", Character.valueOf('2'));
+
+            model.addTransition("B", "E", Character.valueOf('0'));
+            model.addTransition("B", "F", Character.valueOf('1'));
+            model.addTransition("B", "A", Character.valueOf('2'));
+
+            model.addTransition("C", "G", Character.valueOf('0'));
+            model.addTransition("C", "H", Character.valueOf('1'));
+            model.addTransition("C", "B", Character.valueOf('2'));
+
+            model.addTransition("D", "A", Character.valueOf('0'));
+            model.addTransition("D", "C", Character.valueOf('1'));
+            model.addTransition("D", "H", Character.valueOf('2'));
+
+            model.addTransition("E", "E", Character.valueOf('0'));
+            model.addTransition("E", "F", Character.valueOf('1'));
+            model.addTransition("E", "G", Character.valueOf('2'));
+
+            model.addTransition("F", "H", Character.valueOf('0'));
+            model.addTransition("F", "A", Character.valueOf('1'));
+            model.addTransition("F", "B", Character.valueOf('2'));
+
+            model.addTransition("G", "C", Character.valueOf('0'));
+            model.addTransition("G", "D", Character.valueOf('1'));
+            model.addTransition("G", "H", Character.valueOf('2'));
+
+            model.addTransition("H", "H", Character.valueOf('0'));
+            model.addTransition("H", "H", Character.valueOf('1'));
+            model.addTransition("H", "H", Character.valueOf('2'));
+
+
         } catch (ObjectAlreadyExists e) {
             throw new RuntimeException(e);
         }
 
         view.addInfo();
-        thread.start();
+        //thread.start();
     }
+
+    @Override
+    public DFA getDFA() {
+        return model.getDFA();
+    }
+
 
     private void makeMVP() {
         ManagerView managerView = new ManagerView();

@@ -6,6 +6,7 @@ import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.presenter.ContractMVP;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +14,14 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     private ContractMVP.Presenter presenter;
     private OptionsPanel optionsPanel;
+    private RunSimulatorPanel runSimulatorPanel;
     private ChangeInitialStateDialog changeInitialStateDialog;
     private State newInitialState = null;
 
     public ManagerView() {
         createFrame();
         optionsPanel = new OptionsPanel(this);
+        runSimulatorPanel = new RunSimulatorPanel(this);
     }
 
     @Override
@@ -28,7 +31,16 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     @Override
     public void initUI() {
-        this.add(optionsPanel);
+//        GridBagConstraints gbc = new GridBagConstraints();
+//
+//        gbc.gridx = 0;
+//        gbc.gridy = 0;
+//        this.add(optionsPanel);
+//
+//        gbc.gridx = 1;
+//        this.add(runSimulatorPanel);
+
+        this.add(runSimulatorPanel);
         setVisible(true);
     }
 
@@ -44,6 +56,7 @@ public class ManagerView extends JFrame implements ContractMVP.View {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(false);
+        setLayout(new GridBagLayout());
     }
 
     public List<String> separateByComma(String text) {

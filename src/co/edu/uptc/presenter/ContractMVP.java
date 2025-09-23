@@ -1,5 +1,6 @@
 package co.edu.uptc.presenter;
 
+import co.edu.uptc.model.DFA;
 import co.edu.uptc.model.State;
 import co.edu.uptc.model.Transition;
 import co.edu.uptc.model.exceptions.NullException;
@@ -22,6 +23,7 @@ public interface ContractMVP {
         State searchState(String name);
         State getInitialState();
         List<Character> getSymbols();
+        DFA getDFA();
     }
 
     interface Presenter {
@@ -39,6 +41,7 @@ public interface ContractMVP {
         State searchState(String name) throws NullException;
         State getInitialState() throws NullException;
         List<Character> getSymbols();
+        DFA getDFA();
     }
 
     interface View {
