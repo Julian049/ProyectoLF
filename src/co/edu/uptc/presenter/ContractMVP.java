@@ -24,6 +24,13 @@ public interface ContractMVP {
         State getInitialState();
         List<Character> getSymbols();
         DFA getDFA();
+
+        //Exportar
+        boolean canExport();
+        boolean exportDFA(String filePath);
+        //Importar
+        DFA importDFA(String filePath) throws Exception;
+        void replaceDFA(DFA dfa);
     }
 
     interface Presenter {
@@ -42,11 +49,21 @@ public interface ContractMVP {
         State getInitialState() throws NullException;
         List<Character> getSymbols();
         DFA getDFA();
+        //Exportar
+        void exportDFA();
+        //Importar
+        void importDFA();
     }
 
     interface View {
         void setPresenter(Presenter presenter);
         void initUI();
         void addInfo();
+        //Exportar
+        String showSaveFileDialog(String defaultFileName);
+        void showMessage(String message, String title, boolean isSuccess);
+        //Importar
+        String showOpenFileDialog();
+        boolean confirmReplaceData();
     }
 }

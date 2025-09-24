@@ -7,6 +7,7 @@ import co.edu.uptc.presenter.ContractMVP;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,8 @@ public class ManagerView extends JFrame implements ContractMVP.View {
     }
 
     @Override
-    public void addInfo(){
+    public void addInfo() {
+        optionsPanel.clearInterface();
         optionsPanel.updateInterface();
     }
 
@@ -103,5 +105,54 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     public ContractMVP.Presenter getPresenter() {
         return presenter;
+    }
+
+    //Exportar
+    public String showSaveFileDialog(String defaultFileName) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Exportar DFA");
+        fileChooser.setSelectedFile(new File(defaultFileName));
+
+        int result = fileChooser.showSaveDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+            if(!filepath.toLowerCase().endsWith(".json")) {
+                filepath += ".json";
+            }
+            return filepath;
+        }
+        return null;
+    }
+
+    @Override
+    public void showMessage(String message, String title, boolean isSuccess) {
+        int messageType = isSuccess ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
+        JOptionPane.showMessageDialog(this, message, title, messageType);
+    }
+
+    //Importar
+    @Override
+    public String showOpenFileDialog() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Importar DFA");
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON", "json"));
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            return fileChooser.getSelectedFile().getAbsolutePath();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean confirmReplaceData() {
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de que desea importar un nuevo DFA?\nEsto reemplazará todos los datos actuales.",
+                "Confirmar Importación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+        return result == JOptionPane.YES_OPTION;
     }
 }

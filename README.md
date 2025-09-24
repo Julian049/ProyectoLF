@@ -13,7 +13,16 @@ Tunja, 2025
 
 ## Descripción
 
-El presente proyecto contiene el código para un simulador de Autómatas finitos deterministas (AFD).
+Simulador interactivo de Autómatas Fintos Deterministas desarrollado en Java con interfaz gráfica Swing. Permite crear, modificar,validar cadenas y gestionar AFDs con funcionalidades de importación y exportación en formato JSON.
+
+## Características Principales
+
+- Creación interactiva de AFDs mediante interfaz gráfica.
+- Validación de cadenas de entrada
+- Exportación e importación de AFDs en formato JSON
+- Interfaz visual con tabla de transiciones
+- Arquitectura MVP (Modelo-Vista-Presentador)
+
 
 ## Funcionamiento
 
@@ -33,7 +42,53 @@ El simulador procesa los estados ingresados y evalúa que no haya estados repeti
 
 - Función de transicion (δ): El simulador mostrará una tabla de estados vs simbolos y el usuario debera indicar las respectivas transiciones.
 
+### Validación de cadenas.
+
+- Ingrese una cadena en el campo de texto
+- Click en "Ejecutar" para ver el proceso
+- El sistema muestra:
+  - Transiciones
+  - Resultado : ACEPTADA o RECHAZADA
 
 
+### Importación/Exportación
 
+- Exportar AFD
+  - Click en "Exportar" para guardar el AFD actual
+  - Seleccione la ubicación de su preferencia
+  - El AFD se guarda en formato JSON con toda la información
+  
 
+- Importar AFD
+  - Click en "Importar" para cargar un AFD a partir de un archivo en formato JSON
+  - Incluye validación para la importación
+
+### Ejemplo de Uso
+
+1. Ingresar Estados (q0,q1,q2,...)
+2. Ingresar Simbolos (0,1,a,b,...)
+3. Ingresar estado inicial (Ej: q0)
+4. Ingresar estado o conjunto de estados de aceptación (Ej: q4,q5...)
+5. Transiciones: Complete la tabla Estados vs Simbolos
+6. Validad: Ingresar una cadena y oserve el resultado (Ej: 0111)
+
+### Formato JSON
+
+El sistema genera archivos JSON con la siguiente estructura:
+
+```
+{
+  "states": [
+    {"name": "A", "isInitial": true, "isFinal": false}
+  ],
+  "transitions": [
+    {"originState": {...}, "destinationState": {...}, "symbol": "0"}
+  ],
+  "symbols": ["0", "1"]
+}
+```
+
+## Requisitos
+
+- Java 8 o superior
+- Bblioteca Gson

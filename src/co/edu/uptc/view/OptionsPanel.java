@@ -384,60 +384,81 @@ public class OptionsPanel extends JPanel {
     private void createImportDFAButton() {
         importDFAButton = new JButton("Importar");
         importDFAButton.addActionListener(e -> {
-            System.out.println("Importar");
+            managerView.getPresenter().importDFA();
         });
     }
 
     private void createExportDFAButton() {
         exportDFAButton = new JButton("Exportar");
         exportDFAButton.addActionListener(e -> {
-            System.out.println("Exportar");
+            managerView.getPresenter().exportDFA();
         });
     }
-
 
     public void updateInterface() {
         userChangeTable = false;
         for (State state : managerView.getPresenter().getStates()) {
-            tableModel.addColumn(state.getName());
-            revalidate();
+            String columnName = state.getName();
+            if (state.isInitial()) {
+                columnName = "→ " + columnName;
+                initialState = state;
+            }
+            if (state.isFinal()) {
+                columnName = columnName + " ⭕";
+            }
+            tableModel.addColumn(columnName);
         }
-
         for (char symbol : managerView.getPresenter().getSymbols()) {
             Object[] newRow = new Object[tableModel.getColumnCount()];
             newRow[0] = symbol;
             tableModel.addRow(newRow);
         }
-
         List<Transition> transitions = managerView.getPresenter().getTransitions();
         for (Transition transition : transitions) {
             int[] rowAndCol = updateTableCells(String.valueOf(transition.getSymbol()), transition.getOriginState().getName());
-            System.out.println("VOy a guardar el valor en la fila: " + rowAndCol[1] + " y en la columna: " + rowAndCol[0]);
-            tableModel.setValueAt(transition.getDestinationState().getName(), rowAndCol[0], rowAndCol[1]);
+            if (rowAndCol[0] >= 0 && rowAndCol[1] >= 0) {
+                tableModel.setValueAt(transition.getDestinationState().getName(), rowAndCol[0], rowAndCol[1]);
+            }
         }
         userChangeTable = true;
+        revalidate();
+        repaint();
     }
 
     private int[] updateTableCells(String rowValue, String columnValue) {
-        int[] result = new int[2];
+        int[] result = {-1, -1};
         for (int i = 0; i < tableModel.getRowCount(); i++) {
             Object value = tableModel.getValueAt(i, 0);
-            if (value != null) {
-                String row = value.toString();
-                if (row.equals(rowValue)) {
-                    result[0] = i;
-                    break;
-                }
+            if (value != null && value.toString().equals(rowValue)) {
+                result[0] = i;
+                break;
             }
         }
         for (int j = 0; j < tableModel.getColumnCount(); j++) {
             String col = tableModel.getColumnName(j);
-            if (col.equals(columnValue)) {
+            String cleanColumnName = col.replace("→ ", "").replace(" ⭕", "");
+            if (cleanColumnName.equals(columnValue)) {
                 result[1] = j;
                 break;
             }
         }
 
         return result;
+    }
+
+    //Importar
+    public void clearInterface() {
+        userChangeTable = false;
+        tableModel.setRowCount(0);
+        int columnCount = transitionsTable.getColumnCount();
+        for (int i = columnCount - 1; i > 0; i--) {
+            transitionsTable.removeColumn(transitionsTable.getColumnModel().getColumn(i));
+        }
+
+        initialState = null;
+
+        userChangeTable = true;
+        revalidate();
+        repaint();
     }
 }

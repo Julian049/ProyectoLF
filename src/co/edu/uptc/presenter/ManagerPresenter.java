@@ -109,7 +109,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
 
         //DATOS DE PRUEBA
 
-
+/*
         try {
 // Estados
             model.addState("A");
@@ -162,6 +162,8 @@ public class ManagerPresenter implements ContractMVP.Presenter {
             throw new RuntimeException(e);
         }
 
+ */
+
         view.addInfo();
         thread.start();
     }
@@ -183,5 +185,47 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         setModel(managerModel);
 
         System.out.println("Patron MVP listo");
+    }
+
+
+    //Exportar
+    @Override
+    public void exportDFA() {
+        if (!model.canExport()) {
+            view.showMessage("No hay ningún DFA para exportar", "Sin Datos", false);
+            return;
+        }
+
+        String filePath = view.showSaveFileDialog("automata.json");
+        if (filePath != null) {
+            if (model.exportDFA(filePath)) {
+                view.showMessage("DFA exportado exitosamente", "Exportación Exitosa", true);
+            } else {
+                view.showMessage("Error al exportar el archivo", "Error", false);
+            }
+        }
+    }
+
+    //Importar
+    @Override
+    public void importDFA() {
+        if(model.canExport()){
+            boolean confirmed = view.confirmReplaceData();
+            if (!confirmed) {
+                return;
+            }
+        }
+
+        String filePath = view.showOpenFileDialog();
+        if (filePath != null) {
+            try {
+                DFA importedDFA = model.importDFA(filePath);
+                model.replaceDFA(importedDFA);
+                view.showMessage("DFA importado exitosamente","Importacion Exitosa",true);
+                view.addInfo();
+            } catch (Exception ex) {
+                view.showMessage("Error al importar el archivo"+ex.getMessage(), "Error", false);
+            }
+        }
     }
 }

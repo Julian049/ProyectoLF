@@ -2,16 +2,21 @@ package co.edu.uptc.model;
 
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.presenter.ContractMVP;
-
+import java.io.File;
 import java.util.List;
 
 public class ManagerModel implements ContractMVP.Model {
 
     public ContractMVP.Presenter presenter;
     private DFA dfa;
+    private DFAExportManager exportManager;
+    private DFAImportManager importManager;
 
     public ManagerModel() {
         this.dfa = new DFA();
+
+        this.exportManager = new DFAExportManager();
+        this.importManager = new DFAImportManager();
     }
 
     @Override
@@ -83,5 +88,31 @@ public class ManagerModel implements ContractMVP.Model {
         return this.dfa;
     }
 
+    //Exportar
+    @Override
+    public boolean canExport(){
+        return !dfa.getStates().isEmpty();
+    }
+
+    @Override
+    public boolean exportDFA(String filePath) {
+        try {
+            exportManager.exportToFile(dfa, filePath);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    //Importar
+    @Override
+    public DFA importDFA(String filePath) throws Exception {
+        return importManager.importFromFile(filePath);
+    }
+
+    @Override
+    public void replaceDFA(DFA newdfa) {
+        this.dfa = newdfa;
+    }
 
 }
