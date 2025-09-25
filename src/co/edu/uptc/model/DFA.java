@@ -88,15 +88,6 @@ public class DFA {
         }
     }
 
-
-    private boolean searchSymbol(char Symbol) {
-        boolean result = false;
-        for (char symbol : symbols) {
-
-        }
-        return result;
-    }
-
     public State searchState(String name) {
         for (State state : states) {
             if (state.getName().equalsIgnoreCase(name)) {
@@ -116,22 +107,6 @@ public class DFA {
             }
         }
         return null;
-    }
-
-    public void deleteState(String state) {
-        State stateToDelete = searchState(state);
-        this.states.remove(stateToDelete);
-        this.transitions.removeIf(transition -> transition.getOriginState().equals(stateToDelete) || transition.getDestinationState().equals(stateToDelete));
-    }
-
-    public void deleteTransition(char transition) {
-//        Transition transitionToDelete = searchTransition(transition);
-//        this.transitions.remove(transitionToDelete);
-    }
-
-    public void updateState(State state) {
-        this.states.remove(state);
-        this.states.add(state);
     }
 
     public void updateTransition(Transition transition, String newTo) {

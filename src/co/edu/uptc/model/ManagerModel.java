@@ -35,18 +35,9 @@ public class ManagerModel implements ContractMVP.Model {
         return dfa.getTransitions();
     }
 
-    public List<Transition> getTransitionsList() {
-        return dfa.getTransitions();
-    }
-
     @Override
     public void addTransition(String currentValue, String to, String from, char value) {
         dfa.addTransition(currentValue, to, from, value);
-    }
-
-    @Override
-    public void removeTransition(char transition) {
-        dfa.deleteTransition(transition);
     }
 
     @Override
@@ -62,11 +53,6 @@ public class ManagerModel implements ContractMVP.Model {
     @Override
     public void addSymbol(String symbol) throws ObjectAlreadyExists {
         dfa.addSymbol(symbol);
-    }
-
-    @Override
-    public void removeState(String state) {
-        dfa.deleteState(state);
     }
 
     @Override
@@ -86,17 +72,6 @@ public class ManagerModel implements ContractMVP.Model {
     }
 
     @Override
-    public State getInitialState() {
-        return dfa.getInitialState();
-    }
-
-    @Override
-    public DFA getDFA() {
-        return this.dfa;
-    }
-
-    //Exportar
-    @Override
     public boolean canExport() {
         return !dfa.getStates().isEmpty();
     }
@@ -111,7 +86,6 @@ public class ManagerModel implements ContractMVP.Model {
         }
     }
 
-    //Importar
     @Override
     public DFA importDFA(String filePath) throws Exception {
         return importManager.importFromFile(filePath);

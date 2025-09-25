@@ -36,11 +36,6 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public void removeTransition(char transition) {
-        model.removeTransition(transition);
-    }
-
-    @Override
     public void addState(String name) throws ObjectAlreadyExists {
         model.addState(name);
     }
@@ -60,22 +55,8 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public State getInitialState() throws NullException {
-        if (model.getInitialState() != null) {
-            NullException ex = new NullException("Ya hay un estado inicial");
-            throw ex;
-        }
-        return model.getInitialState();
-    }
-
-    @Override
     public List<Character> getSymbols() {
         return model.getSymbols();
-    }
-
-    @Override
-    public void removeState(String state) {
-        model.removeState(state);
     }
 
     @Override
@@ -169,12 +150,6 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         //thread.start();
     }
 
-    @Override
-    public DFA getDFA() {
-        return model.getDFA();
-    }
-
-
     private void makeMVP() {
         ManagerView managerView = new ManagerView();
         managerView.setPresenter(this);
@@ -188,8 +163,6 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         System.out.println("Patron MVP listo");
     }
 
-
-    //Exportar
     @Override
     public void exportDFA() {
         if (!model.canExport()) {
@@ -207,7 +180,6 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         }
     }
 
-    //Importar
     @Override
     public void importDFA() {
         if (model.canExport()) {

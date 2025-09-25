@@ -348,7 +348,13 @@ public class OptionsPanel extends JPanel {
     private void createTransitionsTable() {
         ArrayList<String> columnNames = new ArrayList<>();
         columnNames.add("Estado");
-        tableModel = new DefaultTableModel(columnNames.toArray(), 0);
+        tableModel = new DefaultTableModel(columnNames.toArray(), 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column != 0;
+            }
+        };
+
         transitionsTable = new JTable(tableModel);
 
 
@@ -446,7 +452,6 @@ public class OptionsPanel extends JPanel {
         return result;
     }
 
-    //Importar
     public void clearInterface() {
         userChangeTable = false;
         tableModel.setRowCount(0);

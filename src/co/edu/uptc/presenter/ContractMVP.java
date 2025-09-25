@@ -15,20 +15,13 @@ public interface ContractMVP {
         List<State> getStates();
         List<Transition> getTransitions();
         void addTransition(String currentValue,String to, String from, char value);
-        void removeTransition(char transition);
         void addState(String name) throws ObjectAlreadyExists;
-        void removeState(String state);
         String validate(String value) throws NullException;
         void addSymbol(String symbol) throws ObjectAlreadyExists;
         State searchState(String name);
-        State getInitialState();
         List<Character> getSymbols();
-        DFA getDFA();
-
-        //Exportar
         boolean canExport();
         boolean exportDFA(String filePath);
-        //Importar
         DFA importDFA(String filePath) throws Exception;
         void replaceDFA(DFA dfa);
         String generateStrings();
@@ -40,19 +33,13 @@ public interface ContractMVP {
         List<State> getStates();
         List<Transition> getTransitions();
         void addTransition(String currentValue,String to, String from, char value);
-        void removeTransition(char transition);
         void addState(String name) throws ObjectAlreadyExists;
-        void removeState(String state);
         String validate(String value) throws NullException ;
         void addSymbol(String symbol) throws ObjectAlreadyExists;
         void run();
         State searchState(String name) throws NullException;
-        State getInitialState() throws NullException;
         List<Character> getSymbols();
-        DFA getDFA();
-        //Exportar
         void exportDFA();
-        //Importar
         void importDFA();
         String generateStrings();
     }
@@ -61,10 +48,8 @@ public interface ContractMVP {
         void setPresenter(Presenter presenter);
         void initUI();
         void addInfo();
-        //Exportar
         String showSaveFileDialog(String defaultFileName);
         void showMessage(String message, String title, boolean isSuccess);
-        //Importar
         String showOpenFileDialog();
         boolean confirmReplaceData();
     }
