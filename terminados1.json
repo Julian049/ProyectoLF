@@ -1,0 +1,85 @@
+{
+  "states": [
+    {
+      "name": "q0",
+      "isInitial": true,
+      "isFinal": false
+    },
+    {
+      "name": "q1",
+      "isInitial": false,
+      "isFinal": true
+    }
+  ],
+  "transitions": [
+    {
+      "originState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "symbol": "0"
+    },
+    {
+      "originState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "symbol": "1"
+    },
+    {
+      "originState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "destinationState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "symbol": "0"
+    },
+    {
+      "originState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "destinationState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "symbol": "1"
+    }
+  ],
+  "symbols": [
+    "0",
+    "1"
+  ],
+  "acceptedStrings": [
+    "010111",
+    "0011011",
+    "00100000001101",
+    "1100111000100111",
+    "001100010101101001",
+    "0100001111100101001",
+    "11100010100100010011",
+    "001001110100111010001",
+    "000110001001000110000001",
+    "1101101100011110100000111"
+  ],
+  "outStrings": "Cadenas aceptadas \n010111\n0011011\n00100000001101\n1100111000100111\n001100010101101001\n0100001111100101001\n11100010100100010011\n001001110100111010001\n000110001001000110000001\n1101101100011110100000111\n"
+}

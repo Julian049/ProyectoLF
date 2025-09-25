@@ -1,0 +1,147 @@
+{
+  "states": [
+    {
+      "name": "q0",
+      "isInitial": true,
+      "isFinal": false
+    },
+    {
+      "name": "q1",
+      "isInitial": false,
+      "isFinal": true
+    },
+    {
+      "name": "q2",
+      "isInitial": false,
+      "isFinal": false
+    },
+    {
+      "name": "q3",
+      "isInitial": false,
+      "isFinal": false
+    }
+  ],
+  "transitions": [
+    {
+      "originState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "symbol": "0"
+    },
+    {
+      "originState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "destinationState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "symbol": "0"
+    },
+    {
+      "originState": {
+        "name": "q2",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q3",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "symbol": "0"
+    },
+    {
+      "originState": {
+        "name": "q3",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q2",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "symbol": "0"
+    },
+    {
+      "originState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q2",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "symbol": "1"
+    },
+    {
+      "originState": {
+        "name": "q2",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q0",
+        "isInitial": true,
+        "isFinal": false
+      },
+      "symbol": "1"
+    },
+    {
+      "originState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "destinationState": {
+        "name": "q3",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "symbol": "1"
+    },
+    {
+      "originState": {
+        "name": "q3",
+        "isInitial": false,
+        "isFinal": false
+      },
+      "destinationState": {
+        "name": "q1",
+        "isInitial": false,
+        "isFinal": true
+      },
+      "symbol": "1"
+    }
+  ],
+  "symbols": [
+    "0",
+    "1"
+  ],
+  "acceptedStrings": [
+    "101",
+    "01010",
+    "000111100",
+    "101101101101101",
+    "11110110011110101",
+    "0010001010101000111",
+    "101111100100101001011",
+    "11011110000010110000111",
+    "1100101001111110100010101",
+    "00000000010011101011001001010"
+  ],
+  "outStrings": "Cadenas aceptadas \n101\n01010\n000111100\n101101101101101\n11110110011110101\n0010001010101000111\n101111100100101001011\n11011110000010110000111\n1100101001111110100010101\n00000000010011101011001001010\n"
+}

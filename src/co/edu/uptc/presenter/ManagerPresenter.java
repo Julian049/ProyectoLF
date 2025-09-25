@@ -34,7 +34,6 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     public void addTransition(String currentValue, String to, String from, char value) {
         model.addTransition(currentValue, to, from, value);
     }
-
     @Override
     public void addState(String name) throws ObjectAlreadyExists {
         model.addState(name);
@@ -98,47 +97,25 @@ public class ManagerPresenter implements ContractMVP.Presenter {
 
         try {
 // Estados
-            model.addState("A");
-            model.searchState("A").setInitial(true);
-            model.addState("B");
-            model.addState("C");
-            model.addState("D");
-            model.addState("E");
-            model.addState("F");
-            model.addState("G");
-            model.addState("H");
-            model.searchState("H").setFinal(true);
+// Estados
+            model.addState("q0");
+            model.searchState("q0").setInitial(true);
+            model.addState("q1");
+            model.searchState("q1").setFinal(true);
 
-// Agregar símbolos
+// Símbolos
             model.addSymbol("0");
             model.addSymbol("1");
-            model.addSymbol("2");
 
-// Agregar transiciones (AFD - determinista)
-            model.addTransition("", "D", "A", Character.valueOf('0'));
-            model.addTransition("", "F", "A", Character.valueOf('1'));
-            model.addTransition("", "B", "A", Character.valueOf('2'));
-            model.addTransition("", "A", "B", Character.valueOf('0'));
-            model.addTransition("", "A", "B", Character.valueOf('1'));
-            model.addTransition("", "C", "B", Character.valueOf('2'));
-            model.addTransition("", "G", "C", Character.valueOf('0'));
-            model.addTransition("", "A", "C", Character.valueOf('1'));
-            model.addTransition("", "B", "C", Character.valueOf('2'));
-            model.addTransition("", "A", "D", Character.valueOf('0'));
-            model.addTransition("", "G", "D", Character.valueOf('1'));
-            model.addTransition("", "A", "D", Character.valueOf('2'));
-            model.addTransition("", "E", "E", Character.valueOf('0'));
-            model.addTransition("", "F", "E", Character.valueOf('1'));
-            model.addTransition("", "G", "E", Character.valueOf('2'));
-            model.addTransition("", "H", "F", Character.valueOf('0'));
-            model.addTransition("", "E", "F", Character.valueOf('1'));
-            model.addTransition("", "B", "F", Character.valueOf('2'));
-            model.addTransition("", "C", "G", Character.valueOf('0'));
-            model.addTransition("", "D", "G", Character.valueOf('1'));
-            model.addTransition("", "E", "G", Character.valueOf('2'));
-            model.addTransition("", "H", "H", Character.valueOf('0'));
-            model.addTransition("", "H", "H", Character.valueOf('1'));
-            model.addTransition("", "H", "H", Character.valueOf('2'));
+// Transiciones
+// q0 --> q0 : 0
+            model.addTransition("", "q0", "q0", Character.valueOf('0'));
+// q0 --> q1 : 1
+            model.addTransition("", "q1", "q0", Character.valueOf('1'));
+// q1 --> q0 : 0
+            model.addTransition("", "q0", "q1", Character.valueOf('0'));
+// q1 --> q1 : 1
+            model.addTransition("", "q1", "q1", Character.valueOf('1'));
 
 
         } catch (ObjectAlreadyExists e) {
