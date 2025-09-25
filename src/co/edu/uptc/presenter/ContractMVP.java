@@ -18,7 +18,7 @@ public interface ContractMVP {
         void removeTransition(char transition);
         void addState(String name) throws ObjectAlreadyExists;
         void removeState(String state);
-        String validate(String value);
+        String validate(String value) throws NullException;
         void addSymbol(String symbol) throws ObjectAlreadyExists;
         State searchState(String name);
         State getInitialState();
@@ -31,6 +31,7 @@ public interface ContractMVP {
         //Importar
         DFA importDFA(String filePath) throws Exception;
         void replaceDFA(DFA dfa);
+        String generateStrings();
     }
 
     interface Presenter {
@@ -42,7 +43,7 @@ public interface ContractMVP {
         void removeTransition(char transition);
         void addState(String name) throws ObjectAlreadyExists;
         void removeState(String state);
-        String validate(String value);
+        String validate(String value) throws NullException ;
         void addSymbol(String symbol) throws ObjectAlreadyExists;
         void run();
         State searchState(String name) throws NullException;
@@ -53,6 +54,7 @@ public interface ContractMVP {
         void exportDFA();
         //Importar
         void importDFA();
+        String generateStrings();
     }
 
     interface View {

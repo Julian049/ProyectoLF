@@ -31,8 +31,8 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public void addTransition(String currentValue,String to, String from, char value) {
-        model.addTransition(currentValue,to, from, value);
+    public void addTransition(String currentValue, String to, String from, char value) {
+        model.addTransition(currentValue, to, from, value);
     }
 
     @Override
@@ -79,13 +79,18 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     }
 
     @Override
-    public String validate(String value) {
+    public String validate(String value) throws NullException {
         return model.validate(value);
     }
 
     @Override
     public void setModel(ContractMVP.Model model) {
         this.model = model;
+    }
+
+    @Override
+    public String generateStrings() {
+        return model.generateStrings();
     }
 
     @Override
@@ -109,7 +114,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
 
         //DATOS DE PRUEBA
 
-/*
+
         try {
 // Estados
             model.addState("A");
@@ -155,17 +160,13 @@ public class ManagerPresenter implements ContractMVP.Presenter {
             model.addTransition("", "H", "H", Character.valueOf('2'));
 
 
-
-
-
         } catch (ObjectAlreadyExists e) {
             throw new RuntimeException(e);
         }
 
- */
 
         view.addInfo();
-        thread.start();
+        //thread.start();
     }
 
     @Override
@@ -209,7 +210,7 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     //Importar
     @Override
     public void importDFA() {
-        if(model.canExport()){
+        if (model.canExport()) {
             boolean confirmed = view.confirmReplaceData();
             if (!confirmed) {
                 return;
@@ -221,10 +222,10 @@ public class ManagerPresenter implements ContractMVP.Presenter {
             try {
                 DFA importedDFA = model.importDFA(filePath);
                 model.replaceDFA(importedDFA);
-                view.showMessage("DFA importado exitosamente","Importacion Exitosa",true);
+                view.showMessage("DFA importado exitosamente", "Importacion Exitosa", true);
                 view.addInfo();
             } catch (Exception ex) {
-                view.showMessage("Error al importar el archivo"+ex.getMessage(), "Error", false);
+                view.showMessage("Error al importar el archivo" + ex.getMessage(), "Error", false);
             }
         }
     }

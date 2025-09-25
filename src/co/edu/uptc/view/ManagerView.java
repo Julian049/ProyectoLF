@@ -32,37 +32,46 @@ public class ManagerView extends JFrame implements ContractMVP.View {
 
     @Override
     public void initUI() {
+        JPanel containerPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        this.add(optionsPanel);
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 0.5;
+        gbc.weighty = 1.0;
+        gbc.insets = new Insets(5, 5, 5, 5);
+        containerPanel.add(optionsPanel, gbc);
 
         gbc.gridx = 1;
-        this.add(runSimulatorPanel);
+        gbc.weightx = 0.5;
+        containerPanel.add(runSimulatorPanel, gbc);
 
-        //this.add(runSimulatorPanel);
-        //this.add(optionsPanel);
+        JScrollPane scrollPane = new JScrollPane(containerPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        this.add(scrollPane, BorderLayout.CENTER);
         setVisible(true);
-       // this.add(runSimulatorPanel);
-       this.add(optionsPanel); 
-       setVisible(true);
     }
 
     @Override
     public void addInfo() {
         optionsPanel.clearInterface();
         optionsPanel.updateInterface();
+
+        revalidate();
+        repaint();
     }
 
     private void createFrame() {
         setTitle("Simulador de automatas deterministas");
-        setSize(800, 800);
+        setSize(1000, 800);
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(false);
-        setLayout(new GridBagLayout());
+        setLayout(new BorderLayout());
     }
 
     public List<String> separateByComma(String text) {
@@ -107,16 +116,15 @@ public class ManagerView extends JFrame implements ContractMVP.View {
         return presenter;
     }
 
-    //Exportar
     public String showSaveFileDialog(String defaultFileName) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Exportar DFA");
+        fileChooser.setDialogTitle("Exportar AFD");
         fileChooser.setSelectedFile(new File(defaultFileName));
 
         int result = fileChooser.showSaveDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             String filepath = fileChooser.getSelectedFile().getAbsolutePath();
-            if(!filepath.toLowerCase().endsWith(".json")) {
+            if (!filepath.toLowerCase().endsWith(".json")) {
                 filepath += ".json";
             }
             return filepath;
@@ -130,11 +138,10 @@ public class ManagerView extends JFrame implements ContractMVP.View {
         JOptionPane.showMessageDialog(this, message, title, messageType);
     }
 
-    //Importar
     @Override
     public String showOpenFileDialog() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Importar DFA");
+        fileChooser.setDialogTitle("Importar AFD");
         fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Archivos JSON", "json"));
 
         int result = fileChooser.showOpenDialog(this);
@@ -148,7 +155,7 @@ public class ManagerView extends JFrame implements ContractMVP.View {
     public boolean confirmReplaceData() {
         int result = JOptionPane.showConfirmDialog(
                 this,
-                "¿Está seguro de que desea importar un nuevo DFA?\nEsto reemplazará todos los datos actuales.",
+                "¿Está seguro de que desea importar un nuevo AFD?\nEsto reemplazará todos los datos actuales.",
                 "Confirmar Importación",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE

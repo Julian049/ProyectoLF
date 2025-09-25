@@ -1,23 +1,16 @@
 package co.edu.uptc.view;
 
-import co.edu.uptc.model.State;
-import co.edu.uptc.model.Transition;
-import co.edu.uptc.model.DFA;
 import co.edu.uptc.model.exceptions.NullException;
-import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.QuadCurve2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class RunSimulatorPanel extends JPanel {
 
     private ManagerView managerView;
     private JLabel runSimulatorTitle;
+    private JLabel acceptedOutStringsLabel;
+    private JButton acceptedStringsButton;
     private JTextField runSimulatorInput;
     private JButton runSimulatorButton;
     private JLabel stringValidate;
@@ -35,6 +28,8 @@ public class RunSimulatorPanel extends JPanel {
         gbc.anchor = GridBagConstraints.CENTER;
 
         createRunSimulatorTitle();
+        createAcceptedOutStringsLabel();
+        createAcceptedStringsButton();
         createRunSimulatorInput();
         createRunSimulatorButton();
         createStringValidate();
@@ -44,26 +39,51 @@ public class RunSimulatorPanel extends JPanel {
         gbc.gridwidth = 2;
         this.add(runSimulatorTitle, gbc);
 
+
+
         gbc.gridx = 0;
         gbc.gridy = 1;
         gbc.gridwidth = 2;
-        this.add(runSimulatorInput, gbc);
+        this.add(acceptedOutStringsLabel, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth = 2;
-        this.add(runSimulatorButton, gbc);
+        this.add(acceptedStringsButton, gbc);
+
 
         gbc.gridx = 0;
         gbc.gridy = 3;
         gbc.gridwidth = 2;
+        this.add(runSimulatorInput, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        this.add(runSimulatorButton, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
         this.add(stringValidate, gbc);
+
     }
 
     private void createRunSimulatorTitle() {
         runSimulatorTitle = new JLabel("Ejecutar simulador");
         runSimulatorTitle.setHorizontalAlignment(SwingConstants.CENTER);
         runSimulatorTitle.setFont(new Font("Arial", Font.BOLD, 16));
+    }
+
+    private void createAcceptedOutStringsLabel() {
+        acceptedOutStringsLabel = new JLabel("");
+    }
+
+    private void createAcceptedStringsButton() {
+        acceptedStringsButton = new JButton("Generar cadenas");
+        acceptedStringsButton.addActionListener(e -> {
+            String htmlText = "<html>" + managerView.getPresenter().generateStrings().replace("\n", "<br>") + "</html>";
+            acceptedOutStringsLabel.setText(htmlText);
+            revalidate();
+        });
     }
 
     private void createRunSimulatorInput() {
@@ -74,15 +94,20 @@ public class RunSimulatorPanel extends JPanel {
     private void createRunSimulatorButton() {
         runSimulatorButton = new JButton("Ejecutar");
         runSimulatorButton.addActionListener(e -> {
-            String result = managerView.getPresenter().validate(runSimulatorInput.getText());
-            System.out.println(result);
-            String htmlText = "<html>" + result.replace("\n", "<br>") + "</html>";
-            stringValidate.setText(htmlText);
-            revalidate();
+            String result = null;
+            try {
+                result = managerView.getPresenter().validate(runSimulatorInput.getText());
+                System.out.println(result);
+                String htmlText = "<html>" + result.replace("\n", "<br>") + "</html>";
+                stringValidate.setText(htmlText);
+                revalidate();
+            } catch (NullException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 
-    private void createStringValidate(){
+    private void createStringValidate() {
         stringValidate = new JLabel("Sin cadena");
         stringValidate.setHorizontalAlignment(SwingConstants.CENTER);
     }

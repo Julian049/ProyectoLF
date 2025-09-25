@@ -1,21 +1,54 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.model.exceptions.NullException;
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DFA {
 
     private List<State> states;
     private List<Transition> transitions;
     private List<Character> symbols;
+    private ArrayList<String> acceptedStrings;
+    private String outStrings = "";
 
     public DFA() {
         this.states = new ArrayList<State>();
         this.transitions = new ArrayList<Transition>();
         this.symbols = new ArrayList<>();
+        acceptedStrings = new ArrayList<>();
+    }
+
+    public void generateStrings() {
+
+        Random random = new Random();
+        int index = 0;
+        int numberStrings = 0;
+        while (acceptedStrings.size() < 10) {
+            String stringToEvaluate = "";
+            for (int i = -1; i < numberStrings; i++) {
+                index = random.nextInt(symbols.size());
+                stringToEvaluate += symbols.get(index);
+            }
+
+            try {
+                if (validate(stringToEvaluate).contains("ACEPTADA")) {
+                    acceptedStrings.add(stringToEvaluate);
+                }
+            } catch (NullException e) {
+                throw new RuntimeException(e);
+            }
+
+            numberStrings++;
+        }
+
+        outStrings += "Cadenas aceptadas \n";
+        for (String string : acceptedStrings) {
+            outStrings += string + "\n";
+        }
     }
 
     public void addState(String name) throws ObjectAlreadyExists {
@@ -128,14 +161,17 @@ public class DFA {
         return state.isFinal();
     }
 
-    public String validate(String input) {
+    public String validate(String input) throws NullException {
+        if (input.isEmpty()) {
+            throw new NullException("Cadena a evaluar vacia");
+        }
 
         StringBuilder output = new StringBuilder("Evaluando cadena " + input + " \n");
         boolean initialState = false;
         State currentState = getInitialState();
 
         if (currentState == null) {
-            output.append("No se ha definido un estado inicial");
+            throw new NullException("No se ha definido un estado inicial");
         } else {
             initialState = true;
         }
@@ -155,8 +191,7 @@ public class DFA {
         for (char symbol : values) {
             State nextState = getNextState(currentState, symbol);
             if (nextState == null) {
-                output.append("El simbolo: ").append(symbol).append(" no pertenece al alfabeto del automata \n");
-                break;
+                throw new NullException("El simbolo: " + symbol + " no pertenece al alfabeto del automata ");
             }
             output.append("Desde el estado " + currentState.getName() + " con el símbolo '" + symbol + "' se transita al estado " + nextState.getName() + "\n");
             currentState = nextState;
@@ -193,6 +228,10 @@ public class DFA {
 
     public List<Character> getSymbols() {
         return symbols;
+    }
+
+    public String getOutStrings() {
+        return outStrings;
     }
 
 }

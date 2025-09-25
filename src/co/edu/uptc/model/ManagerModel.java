@@ -1,8 +1,9 @@
 package co.edu.uptc.model;
 
+import co.edu.uptc.model.exceptions.NullException;
 import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import co.edu.uptc.presenter.ContractMVP;
-import java.io.File;
+
 import java.util.List;
 
 public class ManagerModel implements ContractMVP.Model {
@@ -69,10 +70,16 @@ public class ManagerModel implements ContractMVP.Model {
     }
 
     @Override
-    public String validate(String value) {
+    public String validate(String value) throws NullException {
         return dfa.validate(value);
     }
 
+    @Override
+    public String generateStrings(){
+        dfa.generateStrings();
+        return dfa.getOutStrings();
+    }
+    
     @Override
     public State searchState(String name) {
         return dfa.searchState(name);
@@ -90,7 +97,7 @@ public class ManagerModel implements ContractMVP.Model {
 
     //Exportar
     @Override
-    public boolean canExport(){
+    public boolean canExport() {
         return !dfa.getStates().isEmpty();
     }
 
