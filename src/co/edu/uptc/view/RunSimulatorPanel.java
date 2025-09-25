@@ -101,6 +101,7 @@ public class RunSimulatorPanel extends JPanel {
                 result = managerView.getPresenter().validate(runSimulatorInput.getText());
                 String htmlText = "<html>" + result.replace("\n", "<br>") + "</html>";
                 stringValidate.setText(htmlText);
+                runSimulatorInput.setText("");
                 revalidate();
             } catch (NullException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -112,4 +113,10 @@ public class RunSimulatorPanel extends JPanel {
         stringValidate = new JLabel("Sin cadena");
         stringValidate.setHorizontalAlignment(SwingConstants.CENTER);
     }
+    public void clearInterface() {
+        runSimulatorInput.setText("");
+        stringValidate.setText("");
+        acceptedOutStringsLabel.setText("");
+    }
+
 }

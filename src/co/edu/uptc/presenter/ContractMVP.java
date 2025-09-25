@@ -47,7 +47,8 @@ public interface ContractMVP {
     interface View {
         void setPresenter(Presenter presenter);
         void initUI();
-        void addInfo();
+        void updateInterface();
+        void clearInterface();
         String showSaveFileDialog(String defaultFileName);
         void showMessage(String message, String title, boolean isSuccess);
         String showOpenFileDialog();

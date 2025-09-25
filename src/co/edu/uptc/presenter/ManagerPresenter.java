@@ -119,10 +119,11 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         String filePath = view.showOpenFileDialog();
         if (filePath != null) {
             try {
+                view.clearInterface();
                 DFA importedDFA = model.importDFA(filePath);
                 model.replaceDFA(importedDFA);
                 view.showMessage("DFA importado exitosamente", "Importacion Exitosa", true);
-                view.addInfo();
+                view.updateInterface();
             } catch (Exception ex) {
                 view.showMessage("Error al importar el archivo" + ex.getMessage(), "Error", false);
             }

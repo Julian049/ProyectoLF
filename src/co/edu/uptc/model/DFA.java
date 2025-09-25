@@ -118,8 +118,9 @@ public class DFA {
 
     public State getNextState(State current, char symbol) {
         for (Transition transition : this.transitions) {
-            if (transition.getOriginState().equals(current) &&
-                    transition.getSymbol() == symbol) {
+            boolean sameOriginState = transition.getOriginState().getName().equalsIgnoreCase(current.getName());
+            boolean sameSymbol = symbol == transition.getSymbol();
+            if (sameSymbol && sameOriginState) {
                 return transition.getDestinationState();
             }
         }
