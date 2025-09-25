@@ -70,7 +70,7 @@ El simulador procesa los estados ingresados y evalúa que no haya estados repeti
 3. Ingresar estado inicial (Ej: q0)
 4. Ingresar estado o conjunto de estados de aceptación (Ej: q4,q5...)
 5. Transiciones: Complete la tabla Estados vs Simbolos
-6. Validad: Ingresar una cadena y oserve el resultado (Ej: 0111)
+6. Validad: Ingresar una cadena y observe el resultado (Ej: 0111)
 
 ### Formato JSON
 
