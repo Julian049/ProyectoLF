@@ -23,6 +23,7 @@ public class DFA {
     }
 
     public void generateStrings() {
+        outStrings = "";
 
         Random random = new Random();
         int index = 0;
@@ -72,18 +73,11 @@ public class DFA {
         if (currentValue.isEmpty()) {
             State stateFrom = searchState(from);
             State stateTo = searchState(to);
-            System.out.println(symbols.toString());
             if (symbols.contains(symbol)) {
                 Transition transition = new Transition(stateFrom, stateTo, symbol);
                 this.transitions.add(transition);
-                System.out.println("Transicion añadida correctamente");
-            } else {
-                System.out.println("El simbolo no existe");
             }
         } else {
-            System.out.println("Desde " + from);
-            System.out.println("Hacia " + to);
-            System.out.println(symbols.toString());
             updateTransition(searchTransition(symbol, from, currentValue), to);
         }
     }

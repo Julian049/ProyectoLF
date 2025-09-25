@@ -80,9 +80,11 @@ public class RunSimulatorPanel extends JPanel {
     private void createAcceptedStringsButton() {
         acceptedStringsButton = new JButton("Generar cadenas");
         acceptedStringsButton.addActionListener(e -> {
-            String htmlText = "<html>" + managerView.getPresenter().generateStrings().replace("\n", "<br>") + "</html>";
-            acceptedOutStringsLabel.setText(htmlText);
-            revalidate();
+            if (!managerView.getPresenter().getStates().isEmpty()){
+                String htmlText = "<html>" + managerView.getPresenter().generateStrings().replace("\n", "<br>") + "</html>";
+                acceptedOutStringsLabel.setText(htmlText);
+                revalidate();
+            }
         });
     }
 
@@ -97,7 +99,6 @@ public class RunSimulatorPanel extends JPanel {
             String result = null;
             try {
                 result = managerView.getPresenter().validate(runSimulatorInput.getText());
-                System.out.println(result);
                 String htmlText = "<html>" + result.replace("\n", "<br>") + "</html>";
                 stringValidate.setText(htmlText);
                 revalidate();

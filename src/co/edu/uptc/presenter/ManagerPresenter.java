@@ -77,54 +77,8 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     public void run() {
         makeMVP();
         view.initUI();
-
-        Thread thread = new Thread(() -> {
-            while (true) {
-                for (Transition transition : model.getTransitions()) {
-                    System.out.println(transition);
-                    System.out.println(getTransitions().size());
-                }
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        //DATOS DE PRUEBA
-
-
-        try {
-// Estados
-// Estados
-            model.addState("q0");
-            model.searchState("q0").setInitial(true);
-            model.addState("q1");
-            model.searchState("q1").setFinal(true);
-
-// Símbolos
-            model.addSymbol("0");
-            model.addSymbol("1");
-
-// Transiciones
-// q0 --> q0 : 0
-            model.addTransition("", "q0", "q0", Character.valueOf('0'));
-// q0 --> q1 : 1
-            model.addTransition("", "q1", "q0", Character.valueOf('1'));
-// q1 --> q0 : 0
-            model.addTransition("", "q0", "q1", Character.valueOf('0'));
-// q1 --> q1 : 1
-            model.addTransition("", "q1", "q1", Character.valueOf('1'));
-
-
-        } catch (ObjectAlreadyExists e) {
-            throw new RuntimeException(e);
-        }
-
-
         view.addInfo();
-        //thread.start();
+        importDFA1("/home/julian/Documents/ProyectoLF/terminados1.json");
     }
 
     private void makeMVP() {
@@ -136,8 +90,6 @@ public class ManagerPresenter implements ContractMVP.Presenter {
 
         setView(managerView);
         setModel(managerModel);
-
-        System.out.println("Patron MVP listo");
     }
 
     @Override
@@ -167,6 +119,27 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         }
 
         String filePath = view.showOpenFileDialog();
+        if (filePath != null) {
+            try {
+                DFA importedDFA = model.importDFA(filePath);
+                model.replaceDFA(importedDFA);
+                view.showMessage("DFA importado exitosamente", "Importacion Exitosa", true);
+                view.addInfo();
+            } catch (Exception ex) {
+                view.showMessage("Error al importar el archivo" + ex.getMessage(), "Error", false);
+            }
+        }
+    }
+
+    private void importDFA1(String path) {
+        if (model.canExport()) {
+            boolean confirmed = view.confirmReplaceData();
+            if (!confirmed) {
+                return;
+            }
+        }
+
+        String filePath = path;
         if (filePath != null) {
             try {
                 DFA importedDFA = model.importDFA(filePath);
