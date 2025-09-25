@@ -77,8 +77,6 @@ public class ManagerPresenter implements ContractMVP.Presenter {
     public void run() {
         makeMVP();
         view.initUI();
-        view.addInfo();
-        importDFA1("/home/julian/Documents/ProyectoLF/terminados1.json");
     }
 
     private void makeMVP() {
@@ -131,24 +129,4 @@ public class ManagerPresenter implements ContractMVP.Presenter {
         }
     }
 
-    private void importDFA1(String path) {
-        if (model.canExport()) {
-            boolean confirmed = view.confirmReplaceData();
-            if (!confirmed) {
-                return;
-            }
-        }
-
-        String filePath = path;
-        if (filePath != null) {
-            try {
-                DFA importedDFA = model.importDFA(filePath);
-                model.replaceDFA(importedDFA);
-                view.showMessage("DFA importado exitosamente", "Importacion Exitosa", true);
-                view.addInfo();
-            } catch (Exception ex) {
-                view.showMessage("Error al importar el archivo" + ex.getMessage(), "Error", false);
-            }
-        }
-    }
 }
