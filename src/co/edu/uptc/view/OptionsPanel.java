@@ -8,6 +8,7 @@ import co.edu.uptc.model.exceptions.ObjectAlreadyExists;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -329,7 +330,7 @@ public class OptionsPanel extends JPanel {
                         String currentName = getCurrentColumnName(state);
                         updateColumnName(currentName, currentName + " ⭕");
                     } catch (NullException ex) {
-                        throw new RuntimeException(ex);
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
@@ -345,17 +346,23 @@ public class OptionsPanel extends JPanel {
         return stateName;
     }
 
-    private void createTransitionsTable() {
+    private DefaultTableModel createTableModel() {
         ArrayList<String> columnNames = new ArrayList<>();
         columnNames.add("Estado");
-        tableModel = new DefaultTableModel(columnNames.toArray(), 0) {
+        DefaultTableModel newTableModel = new DefaultTableModel(columnNames.toArray(), 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return column != 0;
             }
         };
 
-        transitionsTable = new JTable(tableModel);
+        tableModel = newTableModel;
+        return newTableModel;
+    }
+
+    private void createTransitionsTable() {
+
+        transitionsTable = new JTable(createTableModel());
 
 
         Action action = new AbstractAction() {
@@ -454,14 +461,8 @@ public class OptionsPanel extends JPanel {
 
     public void clearInterface() {
         userChangeTable = false;
-        tableModel.setRowCount(0);
-        int columnCount = transitionsTable.getColumnCount();
-        for (int i = columnCount - 1; i > 0; i--) {
-            transitionsTable.removeColumn(transitionsTable.getColumnModel().getColumn(i));
-        }
-
+        transitionsTable.setModel(createTableModel());
         initialState = null;
-
         userChangeTable = true;
         revalidate();
         repaint();

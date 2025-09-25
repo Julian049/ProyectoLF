@@ -56,10 +56,20 @@ public class ManagerView extends JFrame implements ContractMVP.View {
     }
 
     @Override
-    public void addInfo() {
-        optionsPanel.clearInterface();
+    public void updateInterface() {
         optionsPanel.updateInterface();
 
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void clearInterface(){
+        optionsPanel.clearInterface();
+        runSimulatorPanel.clearInterface();
+        presenter.getStates().clear();
+        presenter.getTransitions().clear();
+        presenter.getSymbols().clear();
         revalidate();
         repaint();
     }
