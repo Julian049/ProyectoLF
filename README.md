@@ -93,5 +93,5 @@ El sistema genera archivos JSON con la siguiente estructura:
 ## Requisitos
 
 - Java 8 o superior
-- Biblioteca Gson, esta se encuentra en la carpeta lib
+- Biblioteca Gson, esta se encuentra en la carpeta lib <br>
 IMPORTANTE: Instalar esta libreria antes de correr la aplicacion, su instalacion depende de la IDE o ambiente de trabajo que se maneje
